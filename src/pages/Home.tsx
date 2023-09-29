@@ -6,7 +6,7 @@ const Home: React.FC = () => {
     <IonPage>
       <IonContent fullscreen>
           <IonImg
-          src="AQUI VA UN ENLACE A LA IMAGEN"
+          src="https://i.postimg.cc/Sxx2Jg20/gosafe-logo.png"
           alt="logo"
         ></IonImg>
         <IonItem>
