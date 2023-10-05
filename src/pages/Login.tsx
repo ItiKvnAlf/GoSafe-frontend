@@ -1,6 +1,6 @@
 import { IonContent, IonItem, IonPage, IonInput, IonButton, IonImg } from '@ionic/react';
 
-const Home: React.FC = () => {
+const Login: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen color="light">
@@ -18,7 +18,7 @@ const Home: React.FC = () => {
         <IonButton size="small" fill="clear" color="tertiary" expand="full" style={{marginLeft: "10%", marginRight: "10%"}}>
           Recuperar contraseña
         </IonButton>
-        <IonButton expand="block" style={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}> 
+        <IonButton routerLink="home" expand="block" style={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}> 
           Iniciar sesión
         </IonButton>
         <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
@@ -29,4 +29,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Login;
