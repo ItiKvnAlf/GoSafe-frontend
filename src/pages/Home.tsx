@@ -1,28 +1,17 @@
-import { IonContent, IonItem, IonPage, IonInput, IonButton, IonImg } from '@ionic/react';
+import { IonContent, IonItem, IonPage, IonInput, IonButton, IonIcon, IonHeader } from '@ionic/react';
 
 const Home: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen color="light">
-        <IonImg
-          src="https://drive.google.com/uc?export=view&id=1-F51tDwdlvWX5pwJd-CSZvaZOjdjm47b"
-          alt="logo"
-          style={{ width: "35%", marginTop: "5%", marginBottom: "5%", justifySelf: "center", alignSelf: "center", display: "block", marginLeft: "auto", marginRight: "auto"}}
-        ></IonImg>
-        <IonItem style ={{marginLeft: "10%", marginRight: "10%"}}>
-          <IonInput label="Correo electrónico" labelPlacement="stacked" type="email" placeholder="Ingresa tu correo electrónico"></IonInput>
-        </IonItem>
-        <IonItem style ={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}>
-          <IonInput label="Contraseña" labelPlacement="stacked" type="password" placeholder="Ingresa tu contraseña"></IonInput>
-        </IonItem>
-        <IonButton size="small" fill="clear" color="tertiary" expand="full" style={{marginLeft: "10%", marginRight: "10%"}}>
-          Recuperar contraseña
+        <IonButton routerLink="profile" fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
+          Perfil
         </IonButton>
-        <IonButton expand="block" style={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}> 
-          Iniciar sesión
+        <IonButton routerLink="newtravel" fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
+          Nuevo viaje
         </IonButton>
-        <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
-          Registrarse
+        <IonButton routerLink="emergency" fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
+          Emergencia
         </IonButton>
       </IonContent>
     </IonPage>

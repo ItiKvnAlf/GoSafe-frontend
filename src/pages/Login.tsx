@@ -15,7 +15,7 @@ const Login: React.FC = () => {
         <IonItem style ={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}>
           <IonInput label="Contraseña" labelPlacement="stacked" type="password" placeholder="Ingresa tu contraseña"></IonInput>
         </IonItem>
-        <IonButton size="small" fill="clear" color="tertiary" expand="full" style={{marginLeft: "10%", marginRight: "10%"}}>
+        <IonButton routerLink="resetpassword" size="small" fill="clear" color="tertiary" expand="full" style={{marginLeft: "10%", marginRight: "10%"}}>
           Recuperar contraseña
         </IonButton>
         <IonButton routerLink="home" expand="block" style={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}> 
