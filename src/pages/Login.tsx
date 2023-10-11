@@ -1,25 +1,28 @@
 import { IonContent, IonItem, IonPage, IonInput, IonButton, IonImg } from '@ionic/react';
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const Login: React.FC = () => {
+  const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
     const userData = { email, password };
-
-    axios.post('http://localhost:3000/auth/signIn', userData)
+    
+    await axios.post('http://localhost:3000/auth/signIn', userData)
       .then(response => {
         if (response.data !== undefined) {
           console.log('Acceso Concedido');
+          (history as any).push('/home');
         } else {
           console.log('Acceso Denegado');
         }
         console.log('Respuesta del servidor:', response.data);
       })
       .catch(error => {
-        console.error('Error al iniciar sesión:', error);
+        console.log('Acceso Denegado');
       });
   };
 
@@ -40,7 +43,7 @@ const Login: React.FC = () => {
         <IonButton routerLink="resetpassword" size="small" fill="clear" color="tertiary" expand="full" style={{marginLeft: "10%", marginRight: "10%"}}>
           Recuperar contraseña
         </IonButton>
-        <IonButton onClick={handleLogin} routerLink="home" expand="block" style={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}> 
+        <IonButton onClick={handleLogin} expand="block" style={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}> 
           Iniciar sesión
         </IonButton>
         <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
