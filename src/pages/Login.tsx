@@ -1,6 +1,24 @@
 import { IonContent, IonItem, IonPage, IonInput, IonButton, IonImg } from '@ionic/react';
+import React, { ChangeEvent, useState } from 'react';
+import axios from 'axios';
 
 const Login: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    const userData = { email, password };
+    console.log('Datos de Prueba (BORRAR):', userData);
+
+    axios.post('http://localhost:3000/auth/singIn', userData)
+      .then(response => {
+        console.log('Respuesta del servidor:', response.data);
+      })
+      .catch(error => {
+        console.error('Error al iniciar sesión:', error);
+      });
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen color="light">
@@ -10,15 +28,15 @@ const Login: React.FC = () => {
           style={{ width: "35%", marginTop: "5%", marginBottom: "5%", justifySelf: "center", alignSelf: "center", display: "block", marginLeft: "auto", marginRight: "auto"}}
         ></IonImg>
         <IonItem style ={{marginLeft: "10%", marginRight: "10%"}}>
-          <IonInput label="Correo electrónico" labelPlacement="stacked" type="email" placeholder="Ingresa tu correo electrónico"></IonInput>
+          <IonInput value={email} label="Correo electrónico" labelPlacement="stacked" type="email" placeholder="Ingresa tu correo electrónico" onIonChange={(e) => setEmail(e.detail.value!)}></IonInput>
         </IonItem>
         <IonItem style ={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}>
-          <IonInput label="Contraseña" labelPlacement="stacked" type="password" placeholder="Ingresa tu contraseña"></IonInput>
+          <IonInput value={password} label="Contraseña" labelPlacement="stacked" type="password" placeholder="Ingresa tu contraseña" onIonChange={(e) => setPassword(e.detail.value!)}></IonInput>
         </IonItem>
         <IonButton routerLink="resetpassword" size="small" fill="clear" color="tertiary" expand="full" style={{marginLeft: "10%", marginRight: "10%"}}>
           Recuperar contraseña
         </IonButton>
-        <IonButton routerLink="home" expand="block" style={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}> 
+        <IonButton onClick={handleLogin} expand="block" style={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}> 
           Iniciar sesión
         </IonButton>
         <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
