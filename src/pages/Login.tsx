@@ -5,12 +5,11 @@ import axios from 'axios';
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const handleLogin = () => {
+  
+  const handleLogin = async () => {
     const userData = { email, password };
-    console.log('Datos de Prueba (BORRAR):', userData);
 
-    axios.post('http://localhost:3000/auth/singIn', userData)
+    axios.post('http://localhost:3000/auth/signIn', userData)
       .then(response => {
         console.log('Respuesta del servidor:', response.data);
       })
