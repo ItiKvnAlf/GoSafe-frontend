@@ -15,11 +15,13 @@ const Register: React.FC = () => {
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [redirectToHome, setRedirectToHome] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         document.title = 'Registro';
         if (!showSuccessAlert && redirectToHome) {
             (history as any).push('/home');
+            setLoading(false);
           }
     }, [showSuccessAlert, redirectToHome]);
 
@@ -53,66 +55,81 @@ const Register: React.FC = () => {
     }
 
     const handleRegister = async () => {
+        setLoading(true);
         const userData = { name, email, password, confirmPass, rut, phone };
 
         if (name === '') {
-            setShowAlert(true);
             setAlertMessage('El nombre es requerido');
+            setShowAlert(true);
+            setLoading(false);
             return;
         } else if (email === '') {
-            setShowAlert(true);
             setAlertMessage('El correo electrónico es requerido');
+            setShowAlert(true);
+            setLoading(false);
             return;
         } else if(email.includes('@') === false || email.includes('.') === false){
-            setShowAlert(true);
             setAlertMessage('El correo electrónico no es válido');
+            setShowAlert(true);
+            setLoading(false);
             return;
         } else if (rut === '') {
-            setShowAlert(true);
             setAlertMessage('El RUT es requerido');
+            setShowAlert(true);
+            setLoading(false);
             return;
         } else if(validateRut(rut) === false){
-            setShowAlert(true);
             setAlertMessage('El RUT ingresado no es válido o no existe');
+            setShowAlert(true);
+            setLoading(false);
             return;
         } else if (phone === '') {
-            setShowAlert(true);
             setAlertMessage('El teléfono es requerido');
+            setShowAlert(true);
+            setLoading(false);
             return;
         } else if (!/^[0-9]+$/.test(phone)){
-            setShowAlert(true);
             setAlertMessage('El teléfono solo puede contener caracteres numéricos');
+            setShowAlert(true);
+            setLoading(false);
             return;
         } else if (phone.length < 9) {
-            setShowAlert(true);
             setAlertMessage('El teléfono debe tener al menos 9 dígitos');
+            setShowAlert(true);
+            setLoading(false);
             return;    
         } else if (password === '') {
-            setShowAlert(true);
             setAlertMessage('La contraseña es requerida');
+            setShowAlert(true);
+            setLoading(false);
             return;
         } else if (confirmPass === '') {
-            setShowAlert(true);
             setAlertMessage('La confirmación de contraseña es requerida');
+            setShowAlert(true);
+            setLoading(false);
             return;
         } else if (password !== confirmPass) {
-            setShowAlert(true);
             setAlertMessage('Las contraseñas no coinciden');
+            setShowAlert(true);
+            setLoading(false);
             return;
         }else{
             try {
                 const response = await axios.post('http://localhost:3000/auth/signUp', userData);
                 if (response.data !== undefined) {
+                  setAlertMessage('Registro exitoso');
                   setShowSuccessAlert(true);
                   setRedirectToHome(true);
-                  setAlertMessage('Registro exitoso');
+                  setLoading(false);
                 } else {
-                  setShowAlert(true);
                   setAlertMessage('Error en el proceso de registro. Por favor intente nuevamente');
+                  setShowAlert(true);
+                  setLoading(false);
                 }
               } catch (error: any) {
                 setShowAlert(true);
                 setAlertMessage('Error. Por favor intente nuevamente');
+                setLoading(false);
               }
         }     
     }
@@ -142,7 +159,7 @@ const Register: React.FC = () => {
             <IonItem style ={{marginLeft: "10%", marginRight: "10%"}}>
                 <IonInput value={confirmPass} label="Contraseña" labelPlacement="stacked" type="password" placeholder="Confirma tu contraseña" onIonInput={(e) => setConfirmPass(e.detail.value!)}></IonInput>
             </IonItem>
-            <IonButton onClick={handleRegister} fill="outline" expand="block" style ={{marginTop: "10%", marginLeft: "10%", marginRight: "10%"}}>
+            <IonButton onClick={handleRegister} disabled={loading} expand="block" style ={{marginTop: "10%", marginLeft: "10%", marginRight: "10%"}}>
                 Registrarse
             </IonButton>
             <IonButton routerLink="login" color="medium" fill="clear" size="small" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
