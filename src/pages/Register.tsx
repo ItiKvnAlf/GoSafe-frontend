@@ -33,21 +33,21 @@ const Register: React.FC = () => {
         }
 
         const num = rut.slice(0, -1);
-        const dv = rut.slice(-1);
+        const vd = rut.slice(-1);
       
         const reversedNum = num.split('').reverse().join('');
-        let suma = 0;
-        let multiplicador = 2;
+        let sum = 0;
+        let multiplier = 2;
       
         for (let i = 0; i < reversedNum.length; i++) {
-          suma += parseInt(reversedNum.charAt(i)) * multiplicador;
-          multiplicador = multiplicador === 7 ? 2 : multiplicador + 1;
+          sum += parseInt(reversedNum.charAt(i)) * multiplier;
+          multiplier = multiplier === 7 ? 2 : multiplier + 1;
         }
       
-        const residuo = suma % 11;
-        const digitoVerificador = residuo === 0 ? 0 : 11 - residuo;
+        const remainder = sum % 11;
+        const verifierDigit = remainder === 0 ? 0 : 11 - remainder;
       
-        if ((digitoVerificador === 10 && dv === 'K') || (digitoVerificador === parseInt(dv))) {
+        if ((verifierDigit === 10 && vd === 'K') || (verifierDigit === parseInt(vd))) {
           return true;
         } else {
           return false;
