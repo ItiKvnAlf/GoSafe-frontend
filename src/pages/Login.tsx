@@ -11,11 +11,13 @@ const Login: React.FC = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [redirectToHome, setRedirectToHome] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     document.title = 'Inicio de sesión';
     if (!showSuccessAlert && redirectToHome) {
       (history as any).push('/home');
+      setLoading(false);
     }
   }, [showSuccessAlert, redirectToHome]);
 
@@ -24,35 +26,42 @@ const Login: React.FC = () => {
   };
 
   const handleLogin = async () => {
+    setLoading(true);
     const userData = { email, password };
 
     if (email === '') {
-      setShowAlert(true);
       setAlertMessage('El correo electrónico es requerido');
+      setShowAlert(true);
+      setLoading(false);
       return;
     }else if (password === '') {
-      setShowAlert(true);
       setAlertMessage('La contraseña es requerida');
+      setShowAlert(true);
+      setLoading(false);
       return;
     }
 
     try {
       const response = await axios.post('http://localhost:3000/auth/signIn', userData);
       if (response.data.message === 'Signed in successfully') {
-        setShowSuccessAlert(true);
         setRedirectToHome(true);
         setAlertMessage('Inicio de sesión exitoso');
+        setShowSuccessAlert(true);
+        setLoading(true);
       } else if (response.data.message === 'Token Expired or invalid') {
         setShowAlert(true);
         setAlertMessage('El tiempo de sesión ha expirado');
+        setLoading(false);
       } else {
-        setShowAlert(true);
         setAlertMessage('Error en el inicio de sesión. Por favor intente nuevamente');
+        setShowAlert(true);
+        setLoading(false);
       }
     } catch (error: any) {
       if (error.response.data.message === 'Wrong email' || error.response.data.message === 'Wrong password' || error.response.data.message === 'User not found') {
-        setShowAlert(true);
         setAlertMessage('El correo electrónico o la contraseña son incorrectos');
+        setShowAlert(true);
+        setLoading(false);
       }
     }
   };
@@ -61,7 +70,7 @@ const Login: React.FC = () => {
     <IonPage>
       <IonContent fullscreen color="light">
         <IonImg
-          src="https://drive.google.com/uc?export=view&id=1-F51tDwdlvWX5pwJd-CSZvaZOjdjm47b"
+          src="/assets/logo.png"
           alt="logo"
           style={{ width: "35%", marginTop: "5%", marginBottom: "5%", justifySelf: "center", alignSelf: "center", display: "block", marginLeft: "auto", marginRight: "auto"}}
         ></IonImg>
@@ -74,7 +83,7 @@ const Login: React.FC = () => {
         <IonButton routerLink="resetpassword" size="small" fill="clear" color="tertiary" expand="full" style={{marginLeft: "10%", marginRight: "10%"}}>
           Recuperar contraseña
         </IonButton>
-        <IonButton onClick={handleLogin} expand="block" style={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}> 
+        <IonButton onClick={handleLogin} disabled={loading} expand="block" style={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}> 
           Iniciar sesión
         </IonButton>
         <IonButton routerLink="register" fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>

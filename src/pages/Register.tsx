@@ -145,6 +145,9 @@ const Register: React.FC = () => {
             <IonButton onClick={handleRegister} fill="outline" expand="block" style ={{marginTop: "10%", marginLeft: "10%", marginRight: "10%"}}>
                 Registrarse
             </IonButton>
+            <IonButton routerLink="login" color="medium" fill="clear" size="small" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
+                Volver al inicio de sesión
+            </IonButton>
             <IonAlert isOpen={showAlert} onDidDismiss={() => setShowAlert(false)} message={alertMessage} buttons={['Cancelar', { text: 'Aceptar', handler: handleAlertConfirm }]}/>
             <IonAlert isOpen={showSuccessAlert} onDidDismiss={() => setShowSuccessAlert(false)} message={alertMessage} buttons={[{ text: 'Aceptar', handler: handleAlertConfirm }]}/>
         </IonContent>
