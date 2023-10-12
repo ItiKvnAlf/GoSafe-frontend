@@ -1,5 +1,5 @@
-import { IonContent, IonItem, IonPage, IonInput, IonButton, IonImg } from '@ionic/react';
-import React, { useState } from 'react';
+import { IonContent, IonItem, IonAlert, IonPage, IonInput, IonButton, IonImg } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
@@ -7,22 +7,58 @@ const Login: React.FC = () => {
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [redirectToHome, setRedirectToHome] = useState(false);
+
+  useEffect(() => {
+    if (!showSuccessAlert && redirectToHome) {
+      (history as any).push('/home');
+    }
+  }, [showSuccessAlert, redirectToHome]);
+
+  const handleAlertConfirm = () => {
+    setShowAlert(false);
+  };
 
   const handleLogin = async () => {
     const userData = { email, password };
+
+    if (email === '') {
+      setShowAlert(true);
+      setAlertMessage('El correo electrónico es requerido');
+      return;
+    }else if (password === '') {
+      setShowAlert(true);
+      setAlertMessage('La contraseña es requerida');
+      return;
+    }
     
     await axios.post('http://localhost:3000/auth/signIn', userData)
       .then(response => {
-        if (response.data !== undefined) {
-          console.log('Acceso Concedido');
-          (history as any).push('/home');
+        if (response.data.message === 'Signed in successfully') {
+          setShowSuccessAlert(true);
+          setRedirectToHome(true);
+          setAlertMessage('Inicio de sesión exitoso');
+        } else if (response.data.message === 'User not found') {
+          setShowAlert(true);
+          setAlertMessage('El usuario no se encuentra registrado');
+        } else if (response.data.message === 'Wrong email' || response.data.message === 'Wrong password') {
+          setShowAlert(true);
+          setAlertMessage('El correo electrónico o la contraseña son incorrectos');
+        } else if (response.data.message === 'Token Expired or invalid') {
+          setShowAlert(true);
+          setAlertMessage('El tiempo de sesión ha expirado');
         } else {
-          console.log('Acceso Denegado');
+          setShowAlert(true);
+          setAlertMessage('Error en el inicio de sesión. Por favor intente nuevamente');
         }
-        console.log('Respuesta del servidor:', response.data);
       })
       .catch(error => {
-        console.log('Acceso Denegado');
+        setShowAlert(true);
+        setAlertMessage('Error en el inicio de sesión. Por favor intente nuevamente');
+        console.log(error);
       });
   };
 
@@ -49,7 +85,9 @@ const Login: React.FC = () => {
         <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
           Registrarse
         </IonButton>
-      </IonContent>
+        <IonAlert isOpen={showAlert} onDidDismiss={() => setShowAlert(false)} message={alertMessage} buttons={['Cancelar', { text: 'Aceptar', handler: handleAlertConfirm }]}/>
+        <IonAlert isOpen={showSuccessAlert} onDidDismiss={() => setShowSuccessAlert(false)} message={alertMessage} buttons={[{ text: 'Aceptar', handler: handleAlertConfirm }]}/>
+      </IonContent>   
     </IonPage>
   );
 };
