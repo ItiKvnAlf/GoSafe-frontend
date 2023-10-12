@@ -13,6 +13,7 @@ const Login: React.FC = () => {
   const [redirectToHome, setRedirectToHome] = useState(false);
 
   useEffect(() => {
+    document.title = 'Inicio de sesión';
     if (!showSuccessAlert && redirectToHome) {
       (history as any).push('/home');
     }
@@ -34,32 +35,26 @@ const Login: React.FC = () => {
       setAlertMessage('La contraseña es requerida');
       return;
     }
-    
-    await axios.post('http://localhost:3000/auth/signIn', userData)
-      .then(response => {
-        if (response.data.message === 'Signed in successfully') {
-          setShowSuccessAlert(true);
-          setRedirectToHome(true);
-          setAlertMessage('Inicio de sesión exitoso');
-        } else if (response.data.message === 'User not found') {
-          setShowAlert(true);
-          setAlertMessage('El usuario no se encuentra registrado');
-        } else if (response.data.message === 'Wrong email' || response.data.message === 'Wrong password') {
-          setShowAlert(true);
-          setAlertMessage('El correo electrónico o la contraseña son incorrectos');
-        } else if (response.data.message === 'Token Expired or invalid') {
-          setShowAlert(true);
-          setAlertMessage('El tiempo de sesión ha expirado');
-        } else {
-          setShowAlert(true);
-          setAlertMessage('Error en el inicio de sesión. Por favor intente nuevamente');
-        }
-      })
-      .catch(error => {
+
+    try {
+      const response = await axios.post('http://localhost:3000/auth/signIn', userData);
+      if (response.data.message === 'Signed in successfully') {
+        setShowSuccessAlert(true);
+        setRedirectToHome(true);
+        setAlertMessage('Inicio de sesión exitoso');
+      } else if (response.data.message === 'Token Expired or invalid') {
+        setShowAlert(true);
+        setAlertMessage('El tiempo de sesión ha expirado');
+      } else {
         setShowAlert(true);
         setAlertMessage('Error en el inicio de sesión. Por favor intente nuevamente');
-        console.log(error);
-      });
+      }
+    } catch (error: any) {
+      if (error.response.data.message === 'Wrong email' || error.response.data.message === 'Wrong password' || error.response.data.message === 'User not found') {
+        setShowAlert(true);
+        setAlertMessage('El correo electrónico o la contraseña son incorrectos');
+      }
+    }
   };
 
   return (
