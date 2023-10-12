@@ -16,8 +16,7 @@ const MyMap: React.FC = () => {
         });
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 20,
-          minZoom: 8,
+          maxZoom: 19,
           detectRetina: true,
         }).addTo(map);
 
