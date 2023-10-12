@@ -7,6 +7,7 @@ import ResetPassword from './pages/ResetPassword';
 import Profile from './pages/Profile';
 import NewTravel from './pages/NewTravel';
 import Emergency from './pages/Emergency';
+import Register from './pages/Register';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -53,6 +54,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/emergency">
           <Emergency />
+        </Route>
+        <Route exact path="/register">
+          <Register />
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>

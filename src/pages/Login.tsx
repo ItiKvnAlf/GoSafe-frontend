@@ -77,7 +77,7 @@ const Login: React.FC = () => {
         <IonButton onClick={handleLogin} expand="block" style={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}> 
           Iniciar sesión
         </IonButton>
-        <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
+        <IonButton routerLink="register" fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
           Registrarse
         </IonButton>
         <IonAlert isOpen={showAlert} onDidDismiss={() => setShowAlert(false)} message={alertMessage} buttons={['Cancelar', { text: 'Aceptar', handler: handleAlertConfirm }]}/>
