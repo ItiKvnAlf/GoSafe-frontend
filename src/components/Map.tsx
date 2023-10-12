@@ -8,7 +8,7 @@ const MyMap: React.FC = () => {
 
   useEffect(() => {
     if (mapRef.current && !mapInstanceRef.current) {
-      const map = L.map(mapRef.current).setView([-29.95332, -71.33947], 14);
+      const map = L.map(mapRef.current).setView([-29.96577538141014, -71.3509081684784], 14);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 20,
