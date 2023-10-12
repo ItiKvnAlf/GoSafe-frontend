@@ -1,18 +1,37 @@
-import { IonContent, IonItem, IonPage, IonInput, IonButton, IonIcon, IonHeader } from '@ionic/react';
+import { IonContent, IonGrid, IonPage, IonCol, IonButton, IonRow, IonImg } from '@ionic/react';
 
 const Home: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen color="light">
-        <IonButton routerLink="profile" fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
-          Perfil
-        </IonButton>
-        <IonButton routerLink="newtravel" fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
-          Nuevo viaje
-        </IonButton>
-        <IonButton routerLink="emergency" fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
-          Emergencia
-        </IonButton>
+      <IonGrid fixed={true} style={{marginTop: "5%"}}>
+        <IonRow>
+          <IonCol>
+            <IonButton routerLink="profile" fill="clear">
+              <IonImg
+              src="/assets/profile_pic.png"
+              alt="profile"
+              ></IonImg>
+            </IonButton>
+          </IonCol>
+          <IonCol>
+            <IonButton routerLink="newtravel" fill="clear">
+            <IonImg
+              src="/assets/new_travel.png"
+              alt="profile"
+              ></IonImg>
+          </IonButton>
+          </IonCol>
+          <IonCol>
+            <IonButton routerLink="emergency" fill="clear">
+            <IonImg
+              src="/assets/emergency.png"
+              alt="profile"
+              ></IonImg>
+            </IonButton>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
       </IonContent>
     </IonPage>
   );

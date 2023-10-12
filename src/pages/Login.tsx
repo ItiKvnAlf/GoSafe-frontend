@@ -72,7 +72,7 @@ const Login: React.FC = () => {
         <IonImg
           src="/assets/logo.png"
           alt="logo"
-          style={{ width: "35%", marginTop: "5%", marginBottom: "5%", justifySelf: "center", alignSelf: "center", display: "block", marginLeft: "auto", marginRight: "auto"}}
+          style={{ width: "35%", marginTop: "15%", marginBottom: "5%", justifySelf: "center", alignSelf: "center", display: "block", marginLeft: "auto", marginRight: "auto"}}
         ></IonImg>
         <IonItem style ={{marginLeft: "10%", marginRight: "10%"}}>
           <IonInput value={email} label="Correo electrónico" labelPlacement="stacked" type="email" placeholder="Ingresa tu correo electrónico" onIonInput={(e) => setEmail(e.detail.value!)}></IonInput>
