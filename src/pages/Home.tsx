@@ -32,6 +32,9 @@ const Home: React.FC = () => {
           </IonCol>
         </IonRow>
       </IonGrid>
+      <IonButton routerLink="login" color="medium" fill="clear" size="small" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
+          Volver al inicio de sesión
+      </IonButton>
       </IonContent>
     </IonPage>
   );
