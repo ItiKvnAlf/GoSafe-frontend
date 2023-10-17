@@ -56,7 +56,7 @@ const Register: React.FC = () => {
 
     const handleRegister = async () => {
         setLoading(true);
-        const userData = { name, email, password, confirmPass, rut, phone };
+        const userData = { name, email, password, rut, phone };
 
         if (name === '') {
             setAlertMessage('El nombre es requerido');
@@ -116,12 +116,16 @@ const Register: React.FC = () => {
         }else{
             try {
                 const response = await axios.post('http://localhost:3000/auth/signUp', userData);
-                if (response.data !== undefined) {
+                if (response.data.message === 'Success') {
                   setAlertMessage('Registro exitoso');
                   setShowSuccessAlert(true);
                   setRedirectToHome(true);
                   setLoading(false);
-                } else {
+                } else if (response.data.message === 'User already registered') {
+                  setAlertMessage('El RUT, correo o teléfono del usuario ya se encuentra registrado');
+                  setShowAlert(true);
+                  setLoading(false);
+                }else {
                   setAlertMessage('Error en el proceso de registro. Por favor intente nuevamente');
                   setShowAlert(true);
                   setLoading(false);

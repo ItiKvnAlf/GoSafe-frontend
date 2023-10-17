@@ -17,6 +17,8 @@ const Login: React.FC = () => {
     document.title = 'Inicio de sesión';
     if (!showSuccessAlert && redirectToHome) {
       (history as any).push('/home');
+      setEmail('');
+      setPassword('');
       setLoading(false);
     }
   }, [showSuccessAlert, redirectToHome]);
