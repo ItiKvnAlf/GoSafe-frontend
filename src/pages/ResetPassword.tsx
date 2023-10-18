@@ -172,7 +172,7 @@ const ResetPassword: React.FC = () => {
             <IonButton onClick={handleCode} disabled={loading} size="small" expand="block" style={{ marginTop: "5%", marginLeft: "10%", marginRight: "10%" }}>
               Cambiar contraseña
             </IonButton><IonButton onClick={goBackToEmail} color="tertiary" fill="clear" size="small" expand="block" style={{ marginLeft: "10%", marginRight: "10%" }}>
-              Volver a ingresar correo electrónico
+              Volver a ingresar email
             </IonButton></>
             <IonButton routerLink="login" color="medium" fill="clear" size="small" expand="block" style={{ marginLeft: "10%", marginRight: "10%" }}>
               Volver al inicio de sesión
@@ -188,7 +188,7 @@ const ResetPassword: React.FC = () => {
           <IonButton onClick={handleChangePassword} disabled={loading} size="small" expand="block" style={{ marginTop: "5%", marginLeft: "10%", marginRight: "10%" }}>
             Confirmar contraseña
           </IonButton><IonButton onClick={goBackToEmail} color="tertiary" fill="clear" size="small" expand="block" style={{ marginLeft: "10%", marginRight: "10%" }}>
-            Volver a ingresar correo electrónico
+            Volver a ingresar email
           </IonButton></>
           <IonButton routerLink="login" color="medium" fill="clear" size="small" expand="block" style={{ marginLeft: "10%", marginRight: "10%" }}>
             Volver al inicio de sesión
