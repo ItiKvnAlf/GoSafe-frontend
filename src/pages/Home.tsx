@@ -1,43 +1,102 @@
-import { IonContent, IonGrid, IonPage, IonCol, IonButton, IonRow, IonImg } from '@ionic/react';
+import React from 'react';
+import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet, IonImg, IonContent, IonItem } from '@ionic/react';
+import { IonReactRouter } from '@ionic/react-router';
 
-const Home: React.FC = () => {
+import { Route, Redirect } from 'react-router';
+
+import home from '/assets/home.png';
+import profile_pic from '/assets/profile_pic.png';
+import new_travel from '/assets/new_travel.png';
+import emergency from '/assets/emergency.png';
+
+import Profile from './Profile';
+import NewTravel from './NewTravel';
+import Emergency from './Emergency';
+
+function Home() {
   return (
-    <IonPage>
+    <IonReactRouter>
       <IonContent fullscreen color="light">
-      <IonGrid fixed={true} style={{marginTop: "5%"}}>
-        <IonRow>
-          <IonCol>
-            <IonButton routerLink="profile" fill="clear">
-              <IonImg
-              src="/assets/profile_pic.png"
-              alt="profile"
-              ></IonImg>
-            </IonButton>
-          </IonCol>
-          <IonCol>
-            <IonButton routerLink="newtravel" fill="clear">
-            <IonImg
-              src="/assets/new_travel.png"
-              alt="profile"
-              ></IonImg>
-          </IonButton>
-          </IonCol>
-          <IonCol>
-            <IonButton routerLink="emergency" fill="clear">
-            <IonImg
-              src="/assets/emergency.png"
-              alt="profile"
-              ></IonImg>
-            </IonButton>
-          </IonCol>
-        </IonRow>
-      </IonGrid>
-      <IonButton routerLink="login" color="medium" fill="clear" size="small" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
-          Volver al inicio de sesión
-      </IonButton>
+        <IonLabel>
+          <h1 style={{textAlign: "center", marginTop: "10%"}}>¡Te damos la bienvenida!</h1>
+        </IonLabel>
+        <IonImg
+          src="/assets/logo.png"
+          alt="logo"
+          style={{ width: "35%", marginTop: "5%", marginBottom: "5%", justifySelf: "center", alignSelf: "center", display: "block", marginLeft: "auto", marginRight: "auto"}}
+        ></IonImg>
+        <IonLabel>
+          <h2 style={{textAlign: "center", marginTop: "5%"}}>¿Qué deseas hacer?</h2>
+        </IonLabel>
+        <IonLabel color="primary">
+          <h4 style={{textAlign: "center", marginTop: "2%"}}>Selecciona una de las opciones del fondo</h4>
+        </IonLabel>
+        <IonLabel color="warning">
+          <h4 style={{textAlign: "center", marginTop: "2%"}}>¿Qué se puede hacer en las páginas?</h4>
+        </IonLabel>
+        <IonItem style={{marginTop: "5%"}}>
+          <IonImg
+            src="/assets/profile_pic_light.png"
+            alt="profile"
+            style={{width: "20%", marginRight: "8%"}}
+          ></IonImg>
+          <IonLabel><h1>Perfil</h1><h4>Revisa o modifica tus datos.</h4></IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonImg
+            src="/assets/new_travel_light.png"
+            alt="newTravel"
+            style={{width: "20%", marginRight: "8%"}}
+          ></IonImg>
+          <IonLabel><h1>Nuevo Viaje</h1><h4>Crea una nueva ruta.</h4></IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonImg
+            src="/assets/emergency_light.png"
+            alt="emergency"
+            style={{width: "20%", marginRight: "8%"}}
+          ></IonImg>
+          <IonLabel><h1>Emergencia</h1><h4>Envía tu ubicación a tus contactos.</h4></IonLabel>
+        </IonItem>
       </IonContent>
-    </IonPage>
-  );
-};
+      <IonTabs>
+        <IonRouterOutlet>
+          {}
+          <Route path="/profile" render={() => <Profile />} exact={true} />
+          <Route path="/newTravel" render={() => <NewTravel />} exact={true} />
+          <Route path="/emergency" render={() => <Emergency />} exact={true} />
+        </IonRouterOutlet>
 
+        <IonTabBar slot="bottom">
+          <IonTabButton tab="profile" href="/profile">
+            <IonImg
+              src="/assets/profile_pic_light.png"
+              alt="profile"
+              style={{width: "30%"}}
+            ></IonImg>
+            <IonLabel>Perfil</IonLabel>
+          </IonTabButton>
+
+          <IonTabButton tab="newTravel" href="/newTravel">
+          <IonImg
+              src="/assets/new_travel_light.png"
+              alt="newTravel"
+              style={{width: "30%"}}
+            ></IonImg>
+            <IonLabel>Nuevo Viaje</IonLabel>
+          </IonTabButton>
+
+          <IonTabButton tab="emergency" href="/emergency">
+            <IonImg
+              src="/assets/emergency_light.png"
+              alt="emergency"
+              style={{width: "30%"}}
+            ></IonImg>
+            <IonLabel>Emergencia</IonLabel>
+          </IonTabButton>
+        </IonTabBar>
+      </IonTabs>
+    </IonReactRouter>
+  );
+}
 export default Home;
