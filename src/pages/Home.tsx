@@ -4,11 +4,6 @@ import { IonReactRouter } from '@ionic/react-router';
 
 import { Route, Redirect } from 'react-router';
 
-import home from '/assets/home.png';
-import profile_pic from '/assets/profile_pic.png';
-import new_travel from '/assets/new_travel.png';
-import emergency from '/assets/emergency.png';
-
 import Profile from './Profile';
 import NewTravel from './NewTravel';
 import Emergency from './Emergency';
