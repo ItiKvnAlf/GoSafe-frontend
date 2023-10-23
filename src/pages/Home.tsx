@@ -7,6 +7,7 @@ import { Route } from 'react-router';
 import Profile from './Profile';
 import NewTravel from './NewTravel';
 import Emergency from './Emergency';
+import ResetPassword from './ResetPassword';
 
 function Home() {
   return (
@@ -57,6 +58,8 @@ function Home() {
           <Route path="/profile" render={() => <Profile />} exact={true} />
           <Route path="/newTravel" render={() => <NewTravel />} exact={true} />
           <Route path="/emergency" render={() => <Emergency />} exact={true} />
+          <Route path="/resetPassword" render={() => <ResetPassword />} exact={true} />
+
         </IonRouterOutlet>
 
         <IonTabBar slot="bottom">
