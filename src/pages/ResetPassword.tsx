@@ -1,5 +1,6 @@
-import { IonContent, IonItem, IonPage, IonInput, IonButton, IonAlert } from '@ionic/react';
+import { IonContent, IonItem, IonPage, IonInput, IonButton, IonAlert, IonIcon } from '@ionic/react';
 import axios from 'axios';
+import { keypad, lockClosed, mail } from 'ionicons/icons';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -21,7 +22,6 @@ const ResetPassword: React.FC = () => {
   useEffect(() => {
     document.title = 'Reestablecer contraseña';
     if (!showSuccessAlert && redirectToLogin) {
-      setVerificationStep('email');
       setEmail('');
       setPassword('');
       setConfirmPassword('');
@@ -156,39 +156,39 @@ const ResetPassword: React.FC = () => {
     <IonPage>
       <IonContent fullscreen color="light">
         {verificationStep === 'email' && (
-          <><IonItem style={{ marginTop: "50%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center" }}>
-            <IonInput value={email} label="Correo electrónico" labelPlacement="stacked" type="email" placeholder="Ingrese su correo electrónico" onIonInput={(e) => setEmail(e.detail.value!)}></IonInput>
+          <><IonItem style={{ marginTop: "50%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "50px"}}>
+            <IonIcon icon={mail} color='tertiary'></IonIcon>
+            <IonInput style ={{textAlign: "center"}} value={email} labelPlacement="stacked" type="email" placeholder="Correo electrónico" onIonInput={(e) => setEmail(e.detail.value!)}></IonInput>
           </IonItem>
-          <IonButton onClick={handleResetPassword} disabled={loading} size="small" expand="block" style={{ marginTop: "5%", marginLeft: "10%", marginRight: "10%" }}>
+          <IonButton shape='round' onClick={handleResetPassword} disabled={loading} size="small" expand="block" style={{ marginTop: "7%", marginLeft: "5%", marginRight: "5%" }}>
               Enviar código de verificación
             </IonButton>
             <IonButton routerLink="login" color="medium" fill="clear" size="small" expand="block" style={{ marginLeft: "10%", marginRight: "10%" }}>
               Volver al inicio de sesión
             </IonButton></>)}
         {verificationStep === 'code' && showAlert !== true && (
-          <><><IonItem style={{ marginTop: "50%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center" }}>
-            <IonInput value={code} label="Código" labelPlacement="stacked" placeholder="Ingrese el código de verificación" onIonInput={(e) => setCode(e.detail.value!)}></IonInput>
+          <><><IonItem style={{ marginTop: "50%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "50px" }}>
+            <IonIcon icon={keypad} color='tertiary'></IonIcon>
+            <IonInput style ={{textAlign: "center"}} value={code} labelPlacement="stacked" placeholder="Código de verificación" onIonInput={(e) => setCode(e.detail.value!)}></IonInput>
           </IonItem>
-            <IonButton onClick={handleCode} disabled={loading} size="small" expand="block" style={{ marginTop: "5%", marginLeft: "10%", marginRight: "10%" }}>
-              Cambiar contraseña
-            </IonButton><IonButton onClick={goBackToEmail} color="tertiary" fill="clear" size="small" expand="block" style={{ marginLeft: "10%", marginRight: "10%" }}>
-              Volver a ingresar email
+            <IonButton shape='round' onClick={handleCode} disabled={loading} size="small" expand="block" style={{ marginTop: "5%", marginLeft: "15%", marginRight: "15%" }}>
+              Confirmar código
             </IonButton></>
             <IonButton routerLink="login" color="medium" fill="clear" size="small" expand="block" style={{ marginLeft: "10%", marginRight: "10%" }}>
               Volver al inicio de sesión
             </IonButton></>
         )}
         {verificationStep === 'changePassword' && showAlert !== true && (
-          <><><IonItem style={{ marginTop: "50%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center" }}>
-            <IonInput value={password} label="Nueva contraseña" labelPlacement="stacked" type="password" placeholder="Ingrese la nueva contraseña" onIonInput={(e) => setPassword(e.detail.value!)}></IonInput>
+          <><><IonItem style={{ marginTop: "50%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "50px" }}>
+            <IonIcon icon={lockClosed} color='primary'></IonIcon>
+            <IonInput style ={{textAlign: "center"}} value={password} labelPlacement="stacked" type="password" placeholder="Nueva contraseña" onIonInput={(e) => setPassword(e.detail.value!)}></IonInput>
           </IonItem>
-          <IonItem style={{ marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center" }}>
-            <IonInput value={confirmPassword} label="Confirmar contraseña" labelPlacement="stacked" type="password" placeholder="Confirmar la nueva contraseña" onIonInput={(e) => setConfirmPassword(e.detail.value!)}></IonInput>
+          <IonItem style={{ marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "50px"}}>
+          <IonIcon icon={lockClosed} color='tertiary'></IonIcon>
+            <IonInput style ={{textAlign: "center"}} value={confirmPassword} labelPlacement="stacked" type="password" placeholder="Confirmar contraseña" onIonInput={(e) => setConfirmPassword(e.detail.value!)}></IonInput>
           </IonItem>
-          <IonButton onClick={handleChangePassword} disabled={loading} size="small" expand="block" style={{ marginTop: "5%", marginLeft: "10%", marginRight: "10%" }}>
+          <IonButton shape='round' onClick={handleChangePassword} disabled={loading} size="small" expand="block" style={{ marginTop: "5%", marginLeft: "10%", marginRight: "10%" }}>
             Confirmar contraseña
-          </IonButton><IonButton onClick={goBackToEmail} color="tertiary" fill="clear" size="small" expand="block" style={{ marginLeft: "10%", marginRight: "10%" }}>
-            Volver a ingresar email
           </IonButton></>
           <IonButton routerLink="login" color="medium" fill="clear" size="small" expand="block" style={{ marginLeft: "10%", marginRight: "10%" }}>
             Volver al inicio de sesión

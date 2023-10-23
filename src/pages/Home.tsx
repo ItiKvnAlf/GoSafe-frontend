@@ -1,8 +1,8 @@
-import React from 'react';
 import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet, IonImg, IonContent, IonItem } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import { location, personCircle, alertCircle } from 'ionicons/icons';
 
-import { Route, Redirect } from 'react-router';
+import { Route } from 'react-router';
 
 import Profile from './Profile';
 import NewTravel from './NewTravel';
@@ -26,9 +26,6 @@ function Home() {
         <IonLabel color="primary">
           <h4 style={{textAlign: "center", marginTop: "2%"}}>Selecciona una de las opciones del fondo</h4>
         </IonLabel>
-        <IonLabel color="warning">
-          <h4 style={{textAlign: "center", marginTop: "2%"}}>¿Qué se puede hacer en las páginas?</h4>
-        </IonLabel>
         <IonItem style={{marginTop: "5%"}}>
           <IonImg
             src="/assets/profile_pic_light.png"
@@ -51,7 +48,7 @@ function Home() {
             alt="emergency"
             style={{width: "20%", marginRight: "8%"}}
           ></IonImg>
-          <IonLabel><h1>Emergencia</h1><h4>Envía tu ubicación a tus contactos.</h4></IonLabel>
+          <IonLabel><h1>Emergencia</h1><h4>Envía tu ubicación.</h4></IonLabel>
         </IonItem>
       </IonContent>
       <IonTabs>
@@ -64,29 +61,17 @@ function Home() {
 
         <IonTabBar slot="bottom">
           <IonTabButton tab="profile" href="/profile">
-            <IonImg
-              src="/assets/profile_pic_light.png"
-              alt="profile"
-              style={{width: "30%"}}
-            ></IonImg>
+            <IonIcon icon={personCircle}></IonIcon>
             <IonLabel>Perfil</IonLabel>
           </IonTabButton>
 
           <IonTabButton tab="newTravel" href="/newTravel">
-          <IonImg
-              src="/assets/new_travel_light.png"
-              alt="newTravel"
-              style={{width: "30%"}}
-            ></IonImg>
+            <IonIcon icon={location}></IonIcon>
             <IonLabel>Nuevo Viaje</IonLabel>
           </IonTabButton>
 
           <IonTabButton tab="emergency" href="/emergency">
-            <IonImg
-              src="/assets/emergency_light.png"
-              alt="emergency"
-              style={{width: "30%"}}
-            ></IonImg>
+            <IonIcon icon={alertCircle}></IonIcon>
             <IonLabel>Emergencia</IonLabel>
           </IonTabButton>
         </IonTabBar>

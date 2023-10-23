@@ -1,7 +1,9 @@
-import { IonContent, IonItem, IonInput, IonPage, IonButton, IonAlert } from '@ionic/react';
+import { IonContent, IonItem, IonInput, IonPage, IonButton, IonAlert, IonIcon } from '@ionic/react';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+
+import { person, mail, idCard, call, lockClosed } from 'ionicons/icons';
 
 const Register: React.FC = () => {
     const history = useHistory();
@@ -145,25 +147,31 @@ const Register: React.FC = () => {
     return (
         <IonPage>
         <IonContent fullscreen color="light">
-            <IonItem style ={{marginTop:"20%", marginLeft: "10%", marginRight: "10%"}}>
-                <IonInput value={name} label="Nombre" labelPlacement="stacked" type="email" placeholder="Ingresa tu nombre" onIonInput={(e) => setName(e.detail.value!)}></IonInput>
+            <IonItem style ={{marginTop:"15%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px"}}>
+                <IonIcon icon={person} color='primary'></IonIcon>
+                <IonInput style={{textAlign: "center"}} value={name} labelPlacement="stacked" type="email" placeholder="Nombre de usuario" onIonInput={(e) => setName(e.detail.value!)}></IonInput>
             </IonItem>
-            <IonItem style ={{marginLeft: "10%", marginRight: "10%"}}>
-                <IonInput value={email} label="Correo electrónico" labelPlacement="stacked" type="email" placeholder="Ingresa tu correo electrónico" onIonInput={(e) => setEmail(e.detail.value!)}></IonInput>
+            <IonItem style ={{marginTop:"1%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px"}}>
+                <IonIcon icon={mail} color='tertiary'></IonIcon>
+                <IonInput style={{textAlign: "center"}} value={email} labelPlacement="stacked" type="email" placeholder="Correo electrónico" onIonInput={(e) => setEmail(e.detail.value!)}></IonInput>
             </IonItem>
-            <IonItem style ={{marginLeft: "10%", marginRight: "10%"}}>
-                <IonInput value={rut} label="RUT" labelPlacement="stacked" type="email" placeholder="Ingresa tu RUT" onIonInput={(e) => setRut(e.detail.value!)}></IonInput>
+            <IonItem style ={{marginTop:"1%",marginLeft: "10%", marginRight: "10%", borderRadius: "50px"}}>
+                <IonIcon icon={idCard} color='primary'></IonIcon>
+                <IonInput style={{textAlign: "center"}} value={rut} labelPlacement="stacked" type="email" placeholder="RUT" onIonInput={(e) => setRut(e.detail.value!)}></IonInput>
             </IonItem>
-            <IonItem style ={{marginLeft: "10%", marginRight: "10%"}}>
-                <IonInput value={phone} label="Teléfono" labelPlacement="stacked" type="email" placeholder="Ingresa tu número telefónico" onIonInput={(e) => setPhone(e.detail.value!)}></IonInput>
+            <IonItem style ={{marginTop:"1%",marginLeft: "10%", marginRight: "10%", borderRadius: "50px"}}>
+                <IonIcon icon={call} color='tertiary'></IonIcon>
+                <IonInput style={{textAlign: "center"}} value={phone} labelPlacement="stacked" type="email" placeholder="Número telefónico" onIonInput={(e) => setPhone(e.detail.value!)}></IonInput>
             </IonItem>
-            <IonItem style ={{marginTop: "5%", marginLeft: "10%", marginRight: "10%"}}>
-                <IonInput value={password} label="Contraseña" labelPlacement="stacked" type="password" placeholder="Ingresa tu contraseña" onIonInput={(e) => setPassword(e.detail.value!)}></IonInput>
+            <IonItem style ={{marginTop: "6%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px"}}>
+                <IonIcon icon={lockClosed} color='primary'></IonIcon>
+                <IonInput style={{textAlign: "center"}} value={password} labelPlacement="stacked" type="password" placeholder="Contraseña" onIonInput={(e) => setPassword(e.detail.value!)}></IonInput>
             </IonItem>
-            <IonItem style ={{marginLeft: "10%", marginRight: "10%"}}>
-                <IonInput value={confirmPass} label="Contraseña" labelPlacement="stacked" type="password" placeholder="Confirma tu contraseña" onIonInput={(e) => setConfirmPass(e.detail.value!)}></IonInput>
+            <IonItem style ={{marginTop:"1%",marginLeft: "10%", marginRight: "10%", borderRadius: "50px"}}>
+                <IonIcon icon={lockClosed} color='tertiary'></IonIcon>
+                <IonInput style={{textAlign: "center"}} value={confirmPass} labelPlacement="stacked" type="password" placeholder="Confirmar contraseña" onIonInput={(e) => setConfirmPass(e.detail.value!)}></IonInput>
             </IonItem>
-            <IonButton onClick={handleRegister} disabled={loading} expand="block" style ={{marginTop: "10%", marginLeft: "10%", marginRight: "10%"}}>
+            <IonButton shape='round' onClick={handleRegister} disabled={loading} expand="block" style ={{marginTop: "10%", marginLeft: "10%", marginRight: "10%"}}>
                 Registrarse
             </IonButton>
             <IonButton routerLink="login" color="medium" fill="clear" size="small" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
