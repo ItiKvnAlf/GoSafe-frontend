@@ -5,7 +5,7 @@ const Settings: React.FC = () => {
     <IonPage>
       <IonContent fullscreen color="light">
         <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
-          Cambiar Tema
+          Personalizar apariencia
         </IonButton>
         <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
           Activar autenticación dactilar
@@ -15,6 +15,15 @@ const Settings: React.FC = () => {
         </IonButton>
         <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
           Configurar acceso por comando
+        </IonButton>
+        <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
+          Configurar notificaciones
+        </IonButton>
+        <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
+          Permisos de acceso
+        </IonButton>
+        <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
+          Registro de cambios
         </IonButton>
       </IonContent>
     </IonPage>
