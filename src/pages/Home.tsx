@@ -1,6 +1,6 @@
 import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet, IonImg, IonContent, IonItem } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { location, personCircle, alertCircle, settings } from 'ionicons/icons';
+import { location, personCircle, alertCircle, settings, home } from 'ionicons/icons';
 
 import { Route } from 'react-router';
 
@@ -71,6 +71,10 @@ function Home() {
           <IonTabButton tab="newTravel" href="/newTravel">
             <IonIcon icon={location}></IonIcon>
             <IonLabel>Nuevo Viaje</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="home" href="/home">
+            <IonIcon icon={home}></IonIcon>
+            <IonLabel>Inicio</IonLabel>
           </IonTabButton>
           <IonTabButton tab="emergency" href="/emergency">
             <IonIcon icon={alertCircle}></IonIcon>

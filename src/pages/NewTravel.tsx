@@ -23,9 +23,6 @@ const NewTravel: React.FC = () => {
           <IonIcon icon={map} color="primary" size="large"></IonIcon>
           <IonInput style ={{textAlign: "center"}} value={destination} labelPlacement="stacked" placeholder="Punto de destino" onIonInput={(e) => setDestination(e.detail.value!)}></IonInput>
         </IonItem>
-        <IonButton routerLink="home" color="medium" fill="clear" size="small" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
-          Volver a la página de inicio
-        </IonButton>
       </IonContent>
     </IonPage>
   );
