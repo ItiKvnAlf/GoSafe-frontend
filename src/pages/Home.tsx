@@ -1,6 +1,6 @@
 import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet, IonImg, IonContent, IonItem } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { location, personCircle, alertCircle } from 'ionicons/icons';
+import { location, personCircle, alertCircle, settings } from 'ionicons/icons';
 
 import { Route } from 'react-router';
 
@@ -8,6 +8,7 @@ import Profile from './Profile';
 import NewTravel from './NewTravel';
 import Emergency from './Emergency';
 import ResetPassword from './ResetPassword';
+import Settings from './Settings';
 
 function Home() {
   return (
@@ -59,7 +60,7 @@ function Home() {
           <Route path="/newTravel" render={() => <NewTravel />} exact={true} />
           <Route path="/emergency" render={() => <Emergency />} exact={true} />
           <Route path="/resetPassword" render={() => <ResetPassword />} exact={true} />
-
+          <Route path="/settings" render={() => <Settings />} exact ={true} />
         </IonRouterOutlet>
 
         <IonTabBar slot="bottom">
@@ -67,15 +68,17 @@ function Home() {
             <IonIcon icon={personCircle}></IonIcon>
             <IonLabel>Perfil</IonLabel>
           </IonTabButton>
-
           <IonTabButton tab="newTravel" href="/newTravel">
             <IonIcon icon={location}></IonIcon>
             <IonLabel>Nuevo Viaje</IonLabel>
           </IonTabButton>
-
           <IonTabButton tab="emergency" href="/emergency">
             <IonIcon icon={alertCircle}></IonIcon>
             <IonLabel>Emergencia</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="settings" href="/settings">
+            <IonIcon icon={settings}></IonIcon>
+            <IonLabel>Ajustes</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
