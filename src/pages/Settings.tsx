@@ -7,13 +7,13 @@ const Settings: React.FC = () => {
         <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
           Cambiar Tema
         </IonButton>
-        <IonButton routerLink="resetPassword" fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
+        <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
           Activar autenticación dactilar
         </IonButton>
-        <IonButton routerLink="resetPassword" fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
+        <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
           Activar autenticación facial
         </IonButton>
-        <IonButton routerLink="resetPassword" fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
+        <IonButton fill="outline" expand="block" style ={{marginLeft: "10%", marginRight: "10%"}}>
           Configurar acceso por comando
         </IonButton>
       </IonContent>
