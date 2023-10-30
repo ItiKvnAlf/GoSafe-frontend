@@ -66,23 +66,23 @@ function Home() {
         <IonTabBar slot="bottom">
           <IonTabButton tab="profile" href="/profile">
             <IonIcon icon={personCircle}></IonIcon>
-            <IonLabel>Perfil</IonLabel>
+            <IonLabel style={{fontSize:'80%'}}>Perfil</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="newTravel" href="/newTravel">
+          <IonTabButton tab="newTravel" href="/newTravel" >
             <IonIcon icon={location}></IonIcon>
-            <IonLabel>Nuevo Viaje</IonLabel>
+            <IonLabel style={{fontSize:'80%'}}>Nuevo Viaje</IonLabel>
           </IonTabButton>
           <IonTabButton tab="home" href="/home">
             <IonIcon icon={home}></IonIcon>
-            <IonLabel>Inicio</IonLabel>
+            <IonLabel style={{fontSize:'80%'}}>Inicio</IonLabel>
           </IonTabButton>
           <IonTabButton tab="emergency" href="/emergency">
             <IonIcon icon={alertCircle}></IonIcon>
-            <IonLabel>Emergencia</IonLabel>
+            <IonLabel style={{fontSize:'80%'}}>Emergencia</IonLabel>
           </IonTabButton>
           <IonTabButton tab="settings" href="/settings">
             <IonIcon icon={settings}></IonIcon>
-            <IonLabel>Ajustes</IonLabel>
+            <IonLabel style={{fontSize:'80%'}}>Ajustes</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
