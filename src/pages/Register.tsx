@@ -18,6 +18,7 @@ const Register: React.FC = () => {
     const [alertMessage, setAlertMessage] = useState('');
     const [redirectToHome, setRedirectToHome] = useState(false);
     const [loading, setLoading] = useState(false);
+    const apiUrl = 'http://localhost:3000';
 
     useEffect(() => {
         document.title = 'Registro';
@@ -117,7 +118,7 @@ const Register: React.FC = () => {
             return;
         }else{
             try {
-                const response = await axios.post('http://localhost:3000/auth/signUp', userData);
+                const response = await axios.post(apiUrl + '/auth/signUp', userData);
                 if (response.data.message === 'Success') {
                   setAlertMessage('Registro exitoso');
                   setShowSuccessAlert(true);

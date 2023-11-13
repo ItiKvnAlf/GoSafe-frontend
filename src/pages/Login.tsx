@@ -13,6 +13,7 @@ const Login: React.FC = () => {
   const [alertMessage, setAlertMessage] = useState('');
   const [redirectToHome, setRedirectToHome] = useState(false);
   const [loading, setLoading] = useState(false);
+  const apiUrl = 'http://localhost:3000';
 
   useEffect(() => {
     document.title = 'Inicio de sesión';
@@ -45,7 +46,7 @@ const Login: React.FC = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/auth/signIn', userData);
+      const response = await axios.post(apiUrl + '/auth/signIn', userData);
       if (response.data.message === 'Signed in successfully') {
         setRedirectToHome(true);
         setAlertMessage('Inicio de sesión exitoso');

@@ -18,6 +18,7 @@ const ResetPassword: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [redirectToLogin, setRedirectToLogin] = useState(false);
+  const apiUrl = 'http://localhost:3000';
 
   useEffect(() => {
     document.title = 'Reestablecer contraseña';
@@ -42,9 +43,9 @@ const ResetPassword: React.FC = () => {
     }
     
     try {
-      const response = await axios.get(`http://localhost:3000/users/${email}`);
+      const response = await axios.get(apiUrl + `/users/${email}`);
       if (response.data !== undefined) {
-        const sendEmail = await axios.post(`http://localhost:3000/users/resetPassword/${email}`);
+        const sendEmail = await axios.post(apiUrl + `/users/resetPassword/${email}`);
         if (sendEmail.data !== undefined) {
           setAlertMessage('Se ha enviado un código de verificación a su correo electrónico');
           setHashedCode(sendEmail.data.data);
@@ -78,7 +79,7 @@ const ResetPassword: React.FC = () => {
     }
     
     try {
-      const response = await axios.post(`http://localhost:3000/users/verifyCode`,codeData);
+      const response = await axios.post(apiUrl + `/users/verifyCode`,codeData);
       if (response.data.message == "Code Verified") {
         setAlertMessage('Código verificado');
         setShowAlert(true);
@@ -122,7 +123,7 @@ const ResetPassword: React.FC = () => {
     }
 
     try {
-      const response = await axios.put(`http://localhost:3000/users/changePassword`, passwordData);
+      const response = await axios.put(apiUrl + `/users/changePassword`, passwordData);
       if (response.data.message == "Password updated successfully") {
         setRedirectToLogin(true);
         setAlertMessage('Contraseña actualizada');
