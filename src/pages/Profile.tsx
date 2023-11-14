@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {IonContent,IonPage,IonAvatar,IonButton,IonLabel,IonInput,IonItem,IonHeader,IonTitle, IonCol, IonGrid, IonRow, IonIcon, IonFab, IonFabButton} from '@ionic/react';
-import { call, eye, eyeOff, home, idCard, lockClosed, lockOpen, lockOpenOutline, logOut, logOutOutline, mail, pencil, person } from 'ionicons/icons';
+import { call, eye, eyeOff, home, idCard, lockClosed, lockOpen, lockOpenOutline, logOut, logOutOutline, mail, pencil, people, person } from 'ionicons/icons';
+import './Profile.css';
 
 const Profile: React.FC = () => {
-  const [username, setUsername] = useState('JohnDoe'); // Replace with actual username
-  const [email, setEmail] = useState('john.doe@example.com'); // Replace with actual email
-  const [password, setPassword] = useState('1234'); // Replace with actual password
-  const [phone, setPhone] = useState('123-456-7890'); // Replace with actual phone number
-  const [address, setAddress] = useState('123 Main St, City'); // Replace with actual address
-  const [rut, setRut] = useState('12.345.678-9'); // Replace with actual Rut
+  const [username, setUsername] = useState('JohnDoe');
+  const [email, setEmail] = useState('john.doe@example.com');
+  const [password, setPassword] = useState('1234');
+  const [phone, setPhone] = useState('123-456-7890');
+  const [address, setAddress] = useState('123 Main St, City');
+  const [rut, setRut] = useState('12.345.678-9');
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
@@ -49,16 +50,23 @@ const Profile: React.FC = () => {
     console.log('Update picture logic here');
   }
 
+  const handleContacts = () => {
+    // Implement the logic to show the contacts
+    // You can use an API call or any other method to show the contacts
+    console.log('Contacts logic here');
+  }
+
   return (
     <IonPage>
       <IonContent fullscreen color="light">
         <IonGrid>
           <IonRow>
-            <IonCol style={{ marginTop: '6%', marginBottom: '3%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div className="curved-background"></div>
+            <IonCol style={{ marginTop: '4%', marginBottom: '3%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <IonAvatar style={{ width: '100px', height: '100px', position: 'relative' }}>
                 <img alt="profilePicture" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-                <IonButton fill="clear" onClick={handleUpdatePicture} style={{ position: 'absolute', bottom: '-25%', right: '-25%' }}>
-                  <IonIcon icon={pencil} color="warning" />
+                <IonButton fill="clear" onClick={handleUpdatePicture} style={{ position: 'absolute', bottom: '-18%', right: '-18%' }}>
+                  <IonIcon size='small' icon={pencil} color='warning'></IonIcon>
                 </IonButton>
               </IonAvatar>
             </IonCol>
@@ -67,6 +75,11 @@ const Profile: React.FC = () => {
         <IonFab vertical="top" horizontal="start" slot="fixed">
           <IonFabButton size="small" color="danger" onClick={handleLogout}>
             <IonIcon icon={logOut} color="light" />
+          </IonFabButton>
+        </IonFab>
+        <IonFab vertical="top" horizontal="end" slot="fixed">
+          <IonFabButton size="small" color="tertiary" onClick={handleContacts}>
+            <IonIcon icon={people} color="light" />
           </IonFabButton>
         </IonFab>
         <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>
@@ -130,7 +143,7 @@ const Profile: React.FC = () => {
             </IonButton>
             <IonButton fill="clear" onClick={handleResetPassword}><IonIcon size='small' icon={pencil} color='dark'></IonIcon></IonButton>
           </IonItem>
-        <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>
+        <IonItem style={{ marginTop: '1%', marginBottom: "5%", marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>
           <IonIcon size='small' icon={home} color='tertiary'></IonIcon>
           <IonInput
             style={{ textAlign: 'center', fontSize: '12px' }}
