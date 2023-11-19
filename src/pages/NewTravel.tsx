@@ -9,6 +9,14 @@ const NewTravel: React.FC = () => {
 
   useEffect(() => {
     document.title = 'Nueva ruta';
+    const token = localStorage.getItem('token');
+    const token_expires = localStorage.getItem('token_expires');
+
+    if (token === null || token_expires === null) {
+      (window as any).location = '/login';
+    }else if (new Date(token_expires) < new Date()) {
+      (window as any).location = '/login';
+    }
   }, []);
 
   return (

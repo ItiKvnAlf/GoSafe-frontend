@@ -9,8 +9,21 @@ import NewTravel from './NewTravel';
 import Emergency from './Emergency';
 import ResetPassword from './ResetPassword';
 import Settings from './Settings';
+import { useEffect } from 'react';
 
 function Home() {
+  useEffect(() => {
+    document.title = 'Inicio';
+    const token = localStorage.getItem('token');
+    const token_expires = localStorage.getItem('token_expires');
+
+    if (token === null || token_expires === null) {
+      (window as any).location = '/login';
+    }else if (new Date(token_expires) < new Date()) {
+      (window as any).location = '/login';
+    }
+  }, []);
+
   return (
     <IonReactRouter>
       <IonContent fullscreen color="light">

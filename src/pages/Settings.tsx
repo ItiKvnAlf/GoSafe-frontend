@@ -1,6 +1,19 @@
 import { IonContent, IonPage, IonButton } from '@ionic/react';
+import { useEffect } from 'react';
 
 const Settings: React.FC = () => {
+  useEffect(() => {
+    document.title = 'Configuración';
+    const token = localStorage.getItem('token');
+    const token_expires = localStorage.getItem('token_expires');
+
+    if (token === null || token_expires === null) {
+      (window as any).location = '/login';
+    }else if (new Date(token_expires) < new Date()) {
+      (window as any).location = '/login';
+    }
+  }, []);
+
   return (
     <IonPage>
       <IonContent fullscreen color="light">

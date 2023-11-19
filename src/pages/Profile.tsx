@@ -1,35 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import {IonContent,IonPage,IonAvatar,IonButton,IonLabel,IonInput,IonItem,IonHeader,IonTitle, IonCol, IonGrid, IonRow, IonIcon, IonFab, IonFabButton} from '@ionic/react';
-import { call, eye, eyeOff, home, idCard, lockClosed, lockOpen, lockOpenOutline, logOut, logOutOutline, mail, pencil, people, person } from 'ionicons/icons';
+import {IonContent,IonPage,IonAvatar,IonButton,IonInput,IonItem, IonCol, IonGrid, IonRow, IonIcon, IonFab, IonFabButton} from '@ionic/react';
+import { call, eye, eyeOff, home, idCard, lockClosed, logOut, mail, pencil, people, person } from 'ionicons/icons';
+
 import './Profile.css';
+import axios from 'axios';
 
 const Profile: React.FC = () => {
-  const [username, setUsername] = useState('JohnDoe');
-  const [email, setEmail] = useState('john.doe@example.com');
-  const [password, setPassword] = useState('1234');
-  const [phone, setPhone] = useState('123-456-7890');
-  const [address, setAddress] = useState('123 Main St, City');
-  const [rut, setRut] = useState('12.345.678-9');
-  const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [rut, setRut] = useState('');
+  const apiUrl = 'http://localhost:3000';
+
+  const userEmail = localStorage.getItem('email');
 
   useEffect(() => {
     document.title = 'Perfil';
+    const token = localStorage.getItem('token');
+    const token_expires = localStorage.getItem('token_expires');
+
+    if (token === null || token_expires === null) {
+      (window as any).location = '/login';
+    }else if (new Date(token_expires) < new Date()) {
+      (window as any).location = '/login';
+    }
+
+    const fetchUserData = async () => {
+      const response = await axios.get(apiUrl + `/users/${userEmail}`);
+      if (response.data !== undefined) {
+        setUsername(response.data.data.name);
+        setEmail(response.data.data.email);
+        setPhone(response.data.data.phone);
+        setAddress(response.data.data.address);
+        setRut(response.data.data.rut);
+      }
+    }
+    
+    fetchUserData();
+
   }, []);
 
-  const handleUpdateUsername = () => {
-    // Implement the logic to update the username
-    // You can use an API call or any other method to update the data
-    console.log('Update username logic here');
-  };
-
-  const handleUpdateAddress = () => {
+  const handleUpdateUser = () => {
     // Implement the logic to update the address
     // You can use an API call or any other method to update the data
-    console.log('Update address logic here');
-  };
-
-  const handleSeePassword = () => {
-    setShowPassword(!showPassword);
+    console.log('Update user logic here');
   };
 
   const handleResetPassword = () => {
@@ -39,9 +54,8 @@ const Profile: React.FC = () => {
   }
 
   const handleLogout = () => {
-    // Implement the logic to logout the user
-    // You can use an API call or any other method to logout the user
-    console.log('Logout logic here');
+    (window as any).location = '/login';
+    localStorage.clear();
   }
 
   const handleUpdatePicture = () => {
@@ -90,7 +104,6 @@ const Profile: React.FC = () => {
             labelPlacement="stacked"
             placeholder="Nombre de usuario"
             onIonInput={(e) => setUsername(e.detail.value!)}
-            disabled
           />
         </IonItem>
         <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>
@@ -102,7 +115,6 @@ const Profile: React.FC = () => {
             type="email"
             placeholder="Correo electrónico"
             onIonInput={(e) => setEmail(e.detail.value!)}
-            disabled
           />
         </IonItem>
         <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>
@@ -113,7 +125,6 @@ const Profile: React.FC = () => {
             labelPlacement="stacked"
             placeholder="Celular"
             onIonInput={(e) => setPhone(e.detail.value!)}
-            disabled
           />
         </IonItem>
         <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>
@@ -127,23 +138,7 @@ const Profile: React.FC = () => {
             disabled
           />
         </IonItem>
-        <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>
-            <IonIcon size='small' icon={lockClosed} color='tertiary'></IonIcon>
-            <IonInput
-              style={{ textAlign: 'center', fontSize: '12px' }}
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              labelPlacement="stacked"
-              placeholder="Contraseña"
-              onIonInput={(e) => setPassword(e.detail.value!)}
-              disabled
-            />
-            <IonButton fill="clear" onClick={handleSeePassword}>
-              <IonIcon size='small' icon={showPassword ? eyeOff : eye} color='dark'></IonIcon>
-            </IonButton>
-            <IonButton fill="clear" onClick={handleResetPassword}><IonIcon size='small' icon={pencil} color='dark'></IonIcon></IonButton>
-          </IonItem>
-        <IonItem style={{ marginTop: '1%', marginBottom: "5%", marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>
+        <IonItem style={{ marginTop: '1%', marginBottom: "3%", marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>
           <IonIcon size='small' icon={home} color='tertiary'></IonIcon>
           <IonInput
             style={{ textAlign: 'center', fontSize: '12px' }}
@@ -151,10 +146,14 @@ const Profile: React.FC = () => {
             labelPlacement="stacked"
             placeholder="Sin dirección registrada"
             onIonInput={(e) => setAddress(e.detail.value!)}
-            disabled
           />
-          <IonButton fill="clear" onClick={handleUpdateAddress}><IonIcon size='small' icon={pencil} color='dark'></IonIcon></IonButton>
         </IonItem>
+        <IonButton color='warning' size='small' shape="round" onClick={handleUpdateUser} expand="block" style={{marginTop: "3%", marginLeft: "20%", marginRight: "20%"}}> 
+          Actualizar datos
+        </IonButton>
+        <IonButton color='warning' size='small' shape="round" onClick={handleResetPassword} expand="block" style={{marginTop: "3%", marginLeft: "20%", marginRight: "20%"}}> 
+          Modificar contraseña
+        </IonButton>
       </IonContent>
     </IonPage>
   );

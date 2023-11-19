@@ -6,8 +6,8 @@ import { lockClosed, mail } from 'ionicons/icons';
 
 const Login: React.FC = () => {
   const history = useHistory();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('kevinalfarost@gmail.com');
+  const [password, setPassword] = useState('1234');
   const [showAlert, setShowAlert] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -52,6 +52,9 @@ const Login: React.FC = () => {
         setAlertMessage('Inicio de sesión exitoso');
         setShowSuccessAlert(true);
         setLoading(true);
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('token_expires', response.data.token_expires);
+        localStorage.setItem('email', email);
       } else if (response.data.message === 'Token Expired or invalid') {
         setShowAlert(true);
         setAlertMessage('El tiempo de sesión ha expirado');
