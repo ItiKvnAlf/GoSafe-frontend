@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { car, map } from 'ionicons/icons';
 
 const NewTravel: React.FC = () => {
-  const [origin, setOrigin] = useState('');
-  const [destination, setDestination] = useState('');
+  const [origin, setOrigin] = useState<L.LatLng | null>(null);
+  const [destination, setDestination] = useState<L.LatLng | null>(null);
+  const [originName, setOriginName] = useState('');
+  const [destinationName, setDestinationName] = useState('');
 
   useEffect(() => {
     document.title = 'Nueva ruta';
@@ -19,17 +21,25 @@ const NewTravel: React.FC = () => {
     }
   }, []);
 
+  const handleOriginSelected = (latLng: L.LatLng) => {
+    setOrigin(latLng);
+  };
+
+  const handleDestinationSelected = (latLng: L.LatLng) => {
+    setDestination(latLng);
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen color="light">
-        <MyMap/>
+        <MyMap onOriginSelected={handleOriginSelected} onDestinationSelected={handleDestinationSelected} />
         <IonItem style ={{marginTop: "3%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px"}}>
           <IonIcon icon={car} color="primary" size="large"></IonIcon>
-          <IonInput style ={{textAlign: "center"}} value={origin} labelPlacement="stacked" placeholder="Punto de origen" onIonInput={(e) => setOrigin(e.detail.value!)}></IonInput>
+          <IonInput style ={{textAlign: "center"}} value={originName} labelPlacement="stacked" placeholder="Punto de origen" onIonInput={(e) => setOriginName(e.detail.value!)}></IonInput>
         </IonItem>
         <IonItem style ={{marginTop: "1%", marginBottom: "3%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px"}}>
           <IonIcon icon={map} color="primary" size="large"></IonIcon>
-          <IonInput style ={{textAlign: "center"}} value={destination} labelPlacement="stacked" placeholder="Punto de destino" onIonInput={(e) => setDestination(e.detail.value!)}></IonInput>
+          <IonInput style ={{textAlign: "center"}} value={destinationName} labelPlacement="stacked" placeholder="Punto de destino" onIonInput={(e) => setDestinationName(e.detail.value!)}></IonInput>
         </IonItem>
       </IonContent>
     </IonPage>

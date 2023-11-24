@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {IonContent,IonPage,IonAvatar,IonButton,IonInput,IonItem, IonCol, IonGrid, IonRow, IonIcon, IonFab, IonFabButton} from '@ionic/react';
-import { call, eye, eyeOff, home, idCard, lockClosed, logOut, mail, pencil, people, person } from 'ionicons/icons';
+import { call, home, idCard, logOut, mail, pencil, people, person } from 'ionicons/icons';
 
 import './Profile.css';
 import axios from 'axios';
@@ -59,9 +59,39 @@ const Profile: React.FC = () => {
   }
 
   const handleUpdatePicture = () => {
-    // Implement the logic to update the profile picture
-    // You can use an API call or any other method to update the picture
-    console.log('Update picture logic here');
+    try {
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'image/*';
+  
+      // Trigger file input click
+      fileInput.click();
+  
+      // Handle file selection
+      fileInput.addEventListener('change', (event) => {
+        const files = (event.target as HTMLInputElement).files;
+  
+        if (files && files.length > 0) {
+          const selectedFile = files[0];
+  
+          // Use FileReader to read the selected file as a data URL
+          const reader = new FileReader();
+          console.log(reader);
+  
+          reader.onload = (e) => {
+            // Update the image source in the avatar
+            const newImageUrl = e.target?.result as string;
+            const avatarImage = document.querySelector('.profile-avatar img') as HTMLImageElement;
+            avatarImage.src = newImageUrl;
+          };
+  
+          // Read the selected file as a data URL
+          reader.readAsDataURL(selectedFile);
+        }
+      });
+    } catch (error) {
+      console.error('Error updating profile picture', error);
+    }
   }
 
   const handleContacts = () => {
@@ -115,6 +145,7 @@ const Profile: React.FC = () => {
             type="email"
             placeholder="Correo electrónico"
             onIonInput={(e) => setEmail(e.detail.value!)}
+            disabled
           />
         </IonItem>
         <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>

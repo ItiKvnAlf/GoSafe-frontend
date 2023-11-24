@@ -2,7 +2,12 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { useEffect, useRef } from 'react';
 
-const MyMap: React.FC = () => {
+interface MyMapProps {
+  onOriginSelected: (latLng: L.LatLng) => void;
+  onDestinationSelected: (latLng: L.LatLng) => void;
+}
+
+const MyMap: React.FC<MyMapProps> = ({ onOriginSelected, onDestinationSelected }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
 
@@ -21,6 +26,17 @@ const MyMap: React.FC = () => {
           detectRetina: false,
         }).addTo(map);
 
+        map.on('click', (e: L.LeafletMouseEvent) => {
+          if (onOriginSelected && onDestinationSelected) {
+            L.marker(e.latlng).addTo(map);
+            if (Math.random() > 0.5) {
+              onOriginSelected(e.latlng);
+            } else {
+              onDestinationSelected(e.latlng);
+            }
+          }
+        });
+
         mapInstanceRef.current = map;
 
         setTimeout(() => {
@@ -36,7 +52,7 @@ const MyMap: React.FC = () => {
     return () => {
       window.removeEventListener('resize', initializeMap);
     };
-  }, []);
+  }, [onOriginSelected, onDestinationSelected]);
 
   return <div ref={mapRef} style={{ height: '65%', marginLeft: '2%', marginRight: '2%', marginTop: '2%' }} />;
 };

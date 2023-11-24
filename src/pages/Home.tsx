@@ -42,27 +42,12 @@ function Home() {
           <h4 style={{textAlign: "center", marginTop: "2%"}}>Selecciona una de las opciones del fondo</h4>
         </IonLabel>
         <IonItem style={{marginTop: "5%"}}>
-          <IonImg
-            src="/assets/profile_pic_light.png"
-            alt="profile"
-            style={{width: "20%", marginRight: "8%"}}
-          ></IonImg>
           <IonLabel><h1>Perfil</h1><h4>Revisa o modifica tus datos.</h4></IonLabel>
         </IonItem>
         <IonItem>
-          <IonImg
-            src="/assets/new_travel_light.png"
-            alt="newTravel"
-            style={{width: "20%", marginRight: "8%"}}
-          ></IonImg>
           <IonLabel><h1>Nuevo Viaje</h1><h4>Crea una nueva ruta.</h4></IonLabel>
         </IonItem>
         <IonItem>
-          <IonImg
-            src="/assets/emergency_light.png"
-            alt="emergency"
-            style={{width: "20%", marginRight: "8%"}}
-          ></IonImg>
           <IonLabel><h1>Emergencia</h1><h4>Envía tu ubicación.</h4></IonLabel>
         </IonItem>
       </IonContent>
