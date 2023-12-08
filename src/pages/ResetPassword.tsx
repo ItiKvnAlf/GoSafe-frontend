@@ -3,6 +3,8 @@ import axios from 'axios';
 import { keypad, lockClosed, mail } from 'ionicons/icons';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import ButtonFilled from '../components/common/ButtonFilled';
+import ButtonClear from '../components/common/ButtonClear';
 
 const ResetPassword: React.FC = () => {
   const history = useHistory();
@@ -18,7 +20,6 @@ const ResetPassword: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [redirectToLogin, setRedirectToLogin] = useState(false);
-  const apiUrl = 'http://localhost:3000';
 
   useEffect(() => {
     document.title = 'Reestablecer contraseña';
@@ -41,11 +42,11 @@ const ResetPassword: React.FC = () => {
       setLoading(false);
       return;
     }
-    
+
     try {
-      const response = await axios.get(apiUrl + `/users/${email}`);
+      const response = await axios.get(import.meta.env.VITE_API_URL + `/users/${email}`);
       if (response.data !== undefined) {
-        const sendEmail = await axios.post(apiUrl + `/users/resetPassword/${email}`);
+        const sendEmail = await axios.post(import.meta.env.VITE_API_URL + `/users/resetPassword/${email}`);
         if (sendEmail.data !== undefined) {
           setAlertMessage('Se ha enviado un código de verificación a su correo electrónico');
           setHashedCode(sendEmail.data.data);
@@ -77,9 +78,9 @@ const ResetPassword: React.FC = () => {
       setLoading(false);
       return;
     }
-    
+
     try {
-      const response = await axios.post(apiUrl + `/users/verifyCode`,codeData);
+      const response = await axios.post(import.meta.env.VITE_API_URL + `/users/verifyCode`, codeData);
       if (response.data.message == "Code Verified") {
         setAlertMessage('Código verificado');
         setShowAlert(true);
@@ -123,7 +124,7 @@ const ResetPassword: React.FC = () => {
     }
 
     try {
-      const response = await axios.put(apiUrl + `/users/changePassword`, passwordData);
+      const response = await axios.put(import.meta.env.VITE_API_URL + `/users/changePassword`, passwordData);
       if (response.data.message == "Password updated successfully") {
         setRedirectToLogin(true);
         setAlertMessage('Contraseña actualizada');
@@ -138,7 +139,7 @@ const ResetPassword: React.FC = () => {
         setShowAlert(true);
         setLoading(false);
       }
-    }catch (error: any) {
+    } catch (error: any) {
       setAlertMessage('Error en la actualización de la contraseña. Ingrese nuevamente.');
       setShowAlert(true);
       setLoading(false);
@@ -157,46 +158,62 @@ const ResetPassword: React.FC = () => {
     <IonPage>
       <IonContent fullscreen color="light">
         {verificationStep === 'email' && (
-          <><IonItem style={{ marginTop: "50%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "50px"}}>
+          <><IonItem style={{ marginTop: "50%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "50px" }}>
             <IonIcon icon={mail} color='tertiary'></IonIcon>
-            <IonInput style ={{textAlign: "center"}} value={email} labelPlacement="stacked" type="email" placeholder="Correo electrónico" onIonInput={(e) => setEmail(e.detail.value!)}></IonInput>
+            <IonInput style={{ textAlign: "center" }} value={email} labelPlacement="stacked" type="email" placeholder="Correo electrónico" onIonInput={(e) => setEmail(e.detail.value!)}></IonInput>
           </IonItem>
-          <IonButton shape='round' onClick={handleResetPassword} disabled={loading} size="small" expand="block" style={{ marginTop: "7%", marginLeft: "5%", marginRight: "5%" }}>
-              Enviar código de verificación
-            </IonButton>
-            <IonButton routerLink="login" color="medium" fill="clear" size="small" expand="block" style={{ marginLeft: "10%", marginRight: "10%" }}>
-              Volver al inicio de sesión
-            </IonButton></>)}
+            <ButtonFilled text='Enviar código de verificación'
+              onClick={handleResetPassword}
+              loading={loading}
+            />
+            <ButtonClear
+              text="Volver al inicio de sesión"
+              path="login"
+            />
+          </>
+        )
+        }
         {verificationStep === 'code' && showAlert !== true && (
-          <><><IonItem style={{ marginTop: "50%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "50px" }}>
-            <IonIcon icon={keypad} color='tertiary'></IonIcon>
-            <IonInput style ={{textAlign: "center"}} value={code} labelPlacement="stacked" placeholder="Código de verificación" onIonInput={(e) => setCode(e.detail.value!)}></IonInput>
-          </IonItem>
-            <IonButton shape='round' onClick={handleCode} disabled={loading} size="small" expand="block" style={{ marginTop: "5%", marginLeft: "15%", marginRight: "15%" }}>
-              Confirmar código
-            </IonButton></>
-            <IonButton routerLink="login" color="medium" fill="clear" size="small" expand="block" style={{ marginLeft: "10%", marginRight: "10%" }}>
-              Volver al inicio de sesión
-            </IonButton></>
+          <>
+            <IonItem style={{ marginTop: "50%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "50px" }}>
+              <IonIcon icon={keypad} color='tertiary'></IonIcon>
+              <IonInput style={{ textAlign: "center" }} value={code} labelPlacement="stacked" placeholder="Código de verificación" onIonInput={(e) => setCode(e.detail.value!)}></IonInput>
+            </IonItem>
+            <ButtonFilled
+              text="Volver al inicio de sesión"
+              onClick={handleCode}
+              loading={loading}
+            />
+            <ButtonClear
+              text="Volver al inicio de sesión"
+              path="login"
+            />
+          </>
         )}
         {verificationStep === 'changePassword' && showAlert !== true && (
-          <><><IonItem style={{ marginTop: "50%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "50px" }}>
-            <IonIcon icon={lockClosed} color='primary'></IonIcon>
-            <IonInput style ={{textAlign: "center"}} value={password} labelPlacement="stacked" type="password" placeholder="Nueva contraseña" onIonInput={(e) => setPassword(e.detail.value!)}></IonInput>
-          </IonItem>
-          <IonItem style={{ marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "50px"}}>
-          <IonIcon icon={lockClosed} color='tertiary'></IonIcon>
-            <IonInput style ={{textAlign: "center"}} value={confirmPassword} labelPlacement="stacked" type="password" placeholder="Confirmar contraseña" onIonInput={(e) => setConfirmPassword(e.detail.value!)}></IonInput>
-          </IonItem>
-          <IonButton shape='round' onClick={handleChangePassword} disabled={loading} size="small" expand="block" style={{ marginTop: "5%", marginLeft: "10%", marginRight: "10%" }}>
-            Confirmar contraseña
-          </IonButton></>
-          <IonButton routerLink="login" color="medium" fill="clear" size="small" expand="block" style={{ marginLeft: "10%", marginRight: "10%" }}>
-            Volver al inicio de sesión
-          </IonButton></>
-      )}
-        <IonAlert isOpen={showAlert} onDidDismiss={() => setShowAlert(false)} message={alertMessage} buttons={['Cancelar', { text: 'Aceptar', handler: handleAlertConfirm }]}/>
-        <IonAlert isOpen={showSuccessAlert} onDidDismiss={() => setShowSuccessAlert(false)} message={alertMessage} buttons={[{ text: 'Aceptar', handler: handleAlertConfirm }]}/>
+          <>
+
+            <IonItem style={{ marginTop: "50%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "50px" }}>
+              <IonIcon icon={lockClosed} color='primary'></IonIcon>
+              <IonInput style={{ textAlign: "center" }} value={password} labelPlacement="stacked" type="password" placeholder="Nueva contraseña" onIonInput={(e) => setPassword(e.detail.value!)}></IonInput>
+            </IonItem>
+            <IonItem style={{ marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "50px" }}>
+              <IonIcon icon={lockClosed} color='tertiary'></IonIcon>
+              <IonInput style={{ textAlign: "center" }} value={confirmPassword} labelPlacement="stacked" type="password" placeholder="Confirmar contraseña" onIonInput={(e) => setConfirmPassword(e.detail.value!)}></IonInput>
+            </IonItem>
+            <ButtonFilled
+              text="Confirmar contraseña"
+              onClick={handleChangePassword}
+              loading={loading}
+            />
+            <ButtonClear
+              text="Volver al inicio de sesión"
+              path="login"
+            />
+          </>
+        )}
+        <IonAlert isOpen={showAlert} onDidDismiss={() => setShowAlert(false)} message={alertMessage} buttons={['Cancelar', { text: 'Aceptar', handler: handleAlertConfirm }]} />
+        <IonAlert isOpen={showSuccessAlert} onDidDismiss={() => setShowSuccessAlert(false)} message={alertMessage} buttons={[{ text: 'Aceptar', handler: handleAlertConfirm }]} />
       </IonContent>
     </IonPage>
   );

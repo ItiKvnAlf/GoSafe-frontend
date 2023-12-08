@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {IonContent,IonPage,IonAvatar,IonButton,IonInput,IonItem, IonCol, IonGrid, IonRow, IonIcon, IonFab, IonFabButton} from '@ionic/react';
+import { IonContent, IonPage, IonAvatar, IonButton, IonInput, IonItem, IonCol, IonGrid, IonRow, IonIcon, IonFab, IonFabButton } from '@ionic/react';
 import { call, home, idCard, logOut, mail, pencil, people, person } from 'ionicons/icons';
 
 import './Profile.css';
-import axios from 'axios';
+import { RegisterFetch } from '../components/axios/custom';
+import { ButtonFilled } from '../components/common';
 
 const Profile: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -11,7 +12,6 @@ const Profile: React.FC = () => {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [rut, setRut] = useState('');
-  const apiUrl = 'http://localhost:3000';
 
   const userEmail = localStorage.getItem('email');
 
@@ -22,12 +22,12 @@ const Profile: React.FC = () => {
 
     if (token === null || token_expires === null) {
       (window as any).location = '/login';
-    }else if (new Date(token_expires) < new Date()) {
+    } else if (new Date(token_expires) < new Date()) {
       (window as any).location = '/login';
     }
 
     const fetchUserData = async () => {
-      const response = await axios.get(apiUrl + `/users/${userEmail}`);
+      const response = await RegisterFetch.post('/user/profile')
       if (response.data !== undefined) {
         setUsername(response.data.data.name);
         setEmail(response.data.data.email);
@@ -36,7 +36,7 @@ const Profile: React.FC = () => {
         setRut(response.data.data.rut);
       }
     }
-    
+
     fetchUserData();
 
   }, []);
@@ -63,28 +63,28 @@ const Profile: React.FC = () => {
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
       fileInput.accept = 'image/*';
-  
+
       // Trigger file input click
       fileInput.click();
-  
+
       // Handle file selection
       fileInput.addEventListener('change', (event) => {
         const files = (event.target as HTMLInputElement).files;
-  
+
         if (files && files.length > 0) {
           const selectedFile = files[0];
-  
+
           // Use FileReader to read the selected file as a data URL
           const reader = new FileReader();
           console.log(reader);
-  
+
           reader.onload = (e) => {
             // Update the image source in the avatar
             const newImageUrl = e.target?.result as string;
             const avatarImage = document.querySelector('.profile-avatar img') as HTMLImageElement;
             avatarImage.src = newImageUrl;
           };
-  
+
           // Read the selected file as a data URL
           reader.readAsDataURL(selectedFile);
         }
@@ -105,7 +105,7 @@ const Profile: React.FC = () => {
       <IonContent fullscreen color="light">
         <IonGrid>
           <IonRow>
-          <div className="curved-background"></div>
+            <div className="curved-background"></div>
             <IonCol style={{ marginTop: '4%', marginBottom: '3%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <IonAvatar style={{ width: '100px', height: '100px', position: 'relative' }}>
                 <img alt="profilePicture" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
@@ -126,7 +126,7 @@ const Profile: React.FC = () => {
             <IonIcon icon={people} color="light" />
           </IonFabButton>
         </IonFab>
-        <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>
+        <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px' }}>
           <IonIcon size='small' icon={person} color='tertiary'></IonIcon>
           <IonInput
             style={{ textAlign: 'center', fontSize: '12px' }}
@@ -136,7 +136,7 @@ const Profile: React.FC = () => {
             onIonInput={(e) => setUsername(e.detail.value!)}
           />
         </IonItem>
-        <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>
+        <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px' }}>
           <IonIcon size='small' icon={mail} color='tertiary'></IonIcon>
           <IonInput
             style={{ textAlign: 'center', fontSize: '12px' }}
@@ -148,7 +148,7 @@ const Profile: React.FC = () => {
             disabled
           />
         </IonItem>
-        <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>
+        <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px' }}>
           <IonIcon size='small' icon={call} color='tertiary'></IonIcon>
           <IonInput
             style={{ textAlign: 'center', fontSize: '12px' }}
@@ -158,7 +158,7 @@ const Profile: React.FC = () => {
             onIonInput={(e) => setPhone(e.detail.value!)}
           />
         </IonItem>
-        <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>
+        <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px' }}>
           <IonIcon size='small' icon={idCard} color='tertiary'></IonIcon>
           <IonInput
             style={{ textAlign: 'center', fontSize: '12px' }}
@@ -169,7 +169,7 @@ const Profile: React.FC = () => {
             disabled
           />
         </IonItem>
-        <IonItem style={{ marginTop: '1%', marginBottom: "3%", marginLeft: '10%', marginRight: '10%', borderRadius: '50px'}}>
+        <IonItem style={{ marginTop: '1%', marginBottom: "3%", marginLeft: '10%', marginRight: '10%', borderRadius: '50px' }}>
           <IonIcon size='small' icon={home} color='tertiary'></IonIcon>
           <IonInput
             style={{ textAlign: 'center', fontSize: '12px' }}
@@ -179,12 +179,18 @@ const Profile: React.FC = () => {
             onIonInput={(e) => setAddress(e.detail.value!)}
           />
         </IonItem>
-        <IonButton color='warning' size='small' shape="round" onClick={handleUpdateUser} expand="block" style={{marginTop: "3%", marginLeft: "20%", marginRight: "20%"}}> 
-          Actualizar datos
-        </IonButton>
-        <IonButton color='warning' size='small' shape="round" onClick={handleResetPassword} expand="block" style={{marginTop: "3%", marginLeft: "20%", marginRight: "20%"}}> 
-          Modificar contraseña
-        </IonButton>
+        <ButtonFilled
+          text="Actualizar datos"
+          onClick={handleUpdateUser}
+          loading={false} // incluir variable para deshabilitar
+          color='warning'
+        />
+        <ButtonFilled
+          text="Modificar contraseña"
+          onClick={handleResetPassword}
+          loading={false} // incluir variable para deshabilitar
+          color='warning'
+        />
       </IonContent>
     </IonPage>
   );
