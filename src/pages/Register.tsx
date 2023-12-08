@@ -119,7 +119,7 @@ const Register: React.FC = () => {
         }else{
             try {
                 const response = await axios.post(apiUrl + '/auth/signUp', userData);
-                if (response.data.message === 'Success') {
+                if (response.data.message === 'success') {
                   setAlertMessage('Registro exitoso');
                   setShowSuccessAlert(true);
                   setRedirectToHome(true);

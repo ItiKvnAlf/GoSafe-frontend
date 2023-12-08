@@ -47,6 +47,7 @@ const Login: React.FC = () => {
 
     try {
       const response = await axios.post(apiUrl + '/auth/signIn', userData);
+      console.log(response);
       if (response.data.message === 'Signed in successfully') {
         setRedirectToHome(true);
         setAlertMessage('Inicio de sesión exitoso');
