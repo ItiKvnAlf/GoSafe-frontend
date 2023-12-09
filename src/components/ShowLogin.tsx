@@ -8,8 +8,8 @@ import { ButtonClear, ButtonFilled, ButtonOutline } from './common';
 
 const ShowLogin: React.FC = () => {
     const history = useHistory();
-    const [email, setEmail] = useState('registro@gmail.com');
-    const [password, setPassword] = useState('registro');
+    const [email, setEmail] = useState('kevinalfarost@gmail.com');
+    const [password, setPassword] = useState('1234');
     const [showAlert, setShowAlert] = useState(false);
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
@@ -80,7 +80,7 @@ const ShowLogin: React.FC = () => {
         <IonPage>
             <IonContent fullscreen color="light">
                 <IonImg
-                    src="/assets/logo.png"
+                    src="../assets/logo.png"
                     alt="logo"
                     style={{ width: "35%", marginTop: "15%", marginBottom: "10%", justifySelf: "center", alignSelf: "center", display: "block", marginLeft: "auto", marginRight: "auto" }}
                 ></IonImg>

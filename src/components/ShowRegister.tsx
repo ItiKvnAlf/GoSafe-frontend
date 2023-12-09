@@ -5,8 +5,6 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import { ButtonFilled, ButtonClear } from "./common";
 
-
-
 const ShowRegister: React.FC = () => {
     const history = useHistory();
     const [name, setName] = useState('');
