@@ -117,7 +117,7 @@ const ShowRegister: React.FC = () => {
             return;
         } else {
             try {
-                const response = await axios.post(import.meta.env.VITE_API_URL + '/auth/signUp', userData);
+                const response = await axios.post(import.meta.env.VITE_API_URL + '/auth/signUp', userData)
                 if (response.data.message === 'Success') {
                     setAlertMessage('Registro exitoso');
                     setShowSuccessAlert(true);

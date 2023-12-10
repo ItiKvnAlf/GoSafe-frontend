@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { IonContent, IonPage, IonAvatar, IonButton, IonInput, IonItem, IonCol, IonGrid, IonRow, IonIcon, IonFab, IonFabButton } from '@ionic/react';
 import { call, home, idCard, logOut, mail, pencil, people, person } from 'ionicons/icons';
+import { createSlice } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+import { UpdateUser } from '../redux/userSlice';
 
 import '../pages/Profile.css';
 import { RegisterFetch } from './axios/custom';
@@ -13,6 +16,7 @@ const ShowProfile: React.FC = () => {
   const [address, setAddress] = useState('');
   const [rut, setRut] = useState('');
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     document.title = 'Perfil';
@@ -27,13 +31,9 @@ const ShowProfile: React.FC = () => {
 
     const fetchUserData = async () => {
       const response = await RegisterFetch.post('/user/profile')
-      if (response.data !== undefined) {
-        setUsername(response.data.data.name);
-        setEmail(response.data.data.email);
-        setPhone(response.data.data.phone);
-        setAddress(response.data.data.address);
-        setRut(response.data.data.rut);
-      }
+      .then (response => response.data)
+      .then (data => dispatch(UpdateUser(data)))
+      .catch(error => console.error(error));
     }
 
     fetchUserData();

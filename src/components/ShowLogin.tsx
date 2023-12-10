@@ -5,11 +5,19 @@ import { mail, lockClosed } from 'ionicons/icons';
 import { useHistory } from 'react-router';
 import { LoginFecth } from './axios/custom';
 import { ButtonClear, ButtonFilled, ButtonOutline } from './common';
+import { useAppSelector, useAppDispatch } from '../redux/hooks';
+import { liveEmail, livePassword, login } from '../redux/authSlice';
+import store from '../store';
 
 const ShowLogin: React.FC = () => {
+
+    //redux
+    const auth = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
+
     const history = useHistory();
-    const [email, setEmail] = useState('kevinalfarost@gmail.com');
-    const [password, setPassword] = useState('1234');
+    const [email, setEmail] = useState('store.getState().auth.user');
+    const [password, setPassword] = useState('auth.user.password');
     const [showAlert, setShowAlert] = useState(false);
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
@@ -47,8 +55,11 @@ const ShowLogin: React.FC = () => {
         }
 
         try {
-            const response = await LoginFecth().post('/auth/signIn', userData);
-
+            console.log(auth)
+            const response = await LoginFecth().post('/auth/signIn', userData)
+            
+            const payload = response.data;
+            dispatch(login(payload))
             if (response.data.message === 'Signed in successfully') {
                 setRedirectToHome(true);
                 setAlertMessage('Inicio de sesión exitoso');
@@ -57,7 +68,6 @@ const ShowLogin: React.FC = () => {
 
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('token_expires', response.data.token_expires);
-                localStorage.setItem('email', email);
             } else if (response.data.message === 'Token Expired or invalid') {
                 setShowAlert(true);
                 setAlertMessage('El tiempo de sesión ha expirado');
@@ -68,11 +78,9 @@ const ShowLogin: React.FC = () => {
                 setLoading(false);
             }
         } catch (error: any) {
-            if (error.response.data.message === 'Wrong email' || error.response.data.message === 'Wrong password' || error.response.data.message === 'User not found') {
-                setAlertMessage('El correo electrónico o la contraseña son incorrectos');
-                setShowAlert(true);
-                setLoading(false);
-            }
+            setAlertMessage('El correo electrónico o la contraseña son incorrectos');
+            setShowAlert(true);
+            setLoading(false);
         }
     };
 
@@ -86,11 +94,19 @@ const ShowLogin: React.FC = () => {
                 ></IonImg>
                 <IonItem style={{ marginLeft: "10%", marginRight: "10%", borderRadius: "50px" }}>
                     <IonIcon icon={mail} color='tertiary'></IonIcon>
-                    <IonInput style={{ textAlign: "center" }} value={email} labelPlacement="stacked" type="email" placeholder="Correo electrónico" onIonInput={(e) => setEmail(e.detail.value!)}></IonInput>
+                    <IonInput 
+                    style={{ textAlign: "center" }} 
+                    value={email} labelPlacement="stacked"
+                    type="email" placeholder="Correo electrónico" 
+                    onIonInput={(e) => setEmail(e.detail.value!)}></IonInput>
                 </IonItem>
                 <IonItem style={{ marginTop: "1%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px" }}>
                     <IonIcon icon={lockClosed} color='primary'></IonIcon>
-                    <IonInput style={{ textAlign: "center" }} value={password} labelPlacement="stacked" type="password" placeholder="Contraseña" onIonInput={(e) => setPassword(e.detail.value!)}></IonInput>
+                    <IonInput 
+                    style={{ textAlign: "center" }} 
+                    value={password} labelPlacement="stacked" 
+                    type="password" placeholder="Contraseña" 
+                    onIonInput={(e) => setPassword(e.detail.value!)}></IonInput>
                 </IonItem>
                 <ButtonClear
                     text="¿Olvidaste tu contraseña?"
