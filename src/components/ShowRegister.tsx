@@ -149,27 +149,58 @@ const ShowRegister: React.FC = () => {
             <IonContent fullscreen color="light">
                 <IonItem style={{ marginTop: "15%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px" }}>
                     <IonIcon icon={person} color='primary'></IonIcon>
-                    <IonInput style={{ textAlign: "center" }} value={name} labelPlacement="stacked" type="email" placeholder="Nombre de usuario" onIonInput={(e) => setName(e.detail.value!)}></IonInput>
+                    <IonInput
+                        style={{ textAlign: "center" }}
+                        value={name} labelPlacement="stacked"
+                        type="email" placeholder="Nombre de usuario"
+                        onIonInput={(e) => setName(e.detail.value!)}
+                    ></IonInput>
                 </IonItem>
                 <IonItem style={{ marginTop: "1%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px" }}>
                     <IonIcon icon={mail} color='tertiary'></IonIcon>
-                    <IonInput style={{ textAlign: "center" }} value={email} labelPlacement="stacked" type="email" placeholder="Correo electrónico" onIonInput={(e) => setEmail(e.detail.value!)}></IonInput>
+                    <IonInput
+                        style={{ textAlign: "center" }}
+                        value={email} labelPlacement="stacked"
+                        type="email" placeholder="Correo electrónico"
+                        onIonInput={(e) => setEmail(e.detail.value!)}
+                    ></IonInput>
                 </IonItem>
                 <IonItem style={{ marginTop: "1%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px" }}>
                     <IonIcon icon={idCard} color='primary'></IonIcon>
-                    <IonInput style={{ textAlign: "center" }} value={rut} labelPlacement="stacked" type="email" placeholder="RUT" onIonInput={(e) => setRut(e.detail.value!)}></IonInput>
+                    <IonInput
+                        style={{ textAlign: "center" }}
+                        value={rut} labelPlacement="stacked"
+                        type="email" placeholder="RUT"
+                        onIonInput={(e) => setRut(e.detail.value!)}
+                    ></IonInput>
                 </IonItem>
                 <IonItem style={{ marginTop: "1%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px" }}>
                     <IonIcon icon={call} color='tertiary'></IonIcon>
-                    <IonInput style={{ textAlign: "center" }} value={phone} labelPlacement="stacked" type="email" placeholder="Número telefónico" onIonInput={(e) => setPhone(e.detail.value!)}></IonInput>
+                    <IonInput
+                        style={{ textAlign: "center" }}
+                        value={phone} labelPlacement="stacked"
+                        type="email" placeholder="Número telefónico"
+                        onIonInput={(e) => setPhone(e.detail.value!)}
+                    ></IonInput>
                 </IonItem>
                 <IonItem style={{ marginTop: "6%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px" }}>
                     <IonIcon icon={lockClosed} color='primary'></IonIcon>
-                    <IonInput style={{ textAlign: "center" }} value={password} labelPlacement="stacked" type="password" placeholder="Contraseña" onIonInput={(e) => setPassword(e.detail.value!)}></IonInput>
+                    <IonInput
+                        style={{ textAlign: "center" }}
+                        value={password} labelPlacement="stacked"
+                        type="password" placeholder="Contraseña"
+                        onIonInput={(e) => setPassword(e.detail.value!)}
+                    ></IonInput>
                 </IonItem>
                 <IonItem style={{ marginTop: "1%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px" }}>
                     <IonIcon icon={lockClosed} color='tertiary'></IonIcon>
-                    <IonInput style={{ textAlign: "center" }} value={confirmPass} labelPlacement="stacked" type="password" placeholder="Confirmar contraseña" onIonInput={(e) => setConfirmPass(e.detail.value!)}></IonInput>
+                    <IonInput
+                        style={{ textAlign: "center" }}
+                        value={confirmPass} labelPlacement="stacked"
+                        type="password"
+                        placeholder="Confirmar contraseña"
+                        onIonInput={(e) => setConfirmPass(e.detail.value!)}
+                    ></IonInput>
                 </IonItem>
                 <ButtonFilled
                     text="Registrarse"

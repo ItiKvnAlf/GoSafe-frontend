@@ -7,16 +7,16 @@ interface UserState {
     name: string;
     email: string;
     rut: string;
-    phone : string;
-    address : string;
+    phone: string;
+    address: string;
 }
 
-const initialState = {
+const initialState: UserState = {
     name: '',
     email: '',
     rut: '',
-    phone : '',
-    address : ''
+    phone: '',
+    address: ''
 };
 
 export const userSlice = createSlice({
@@ -32,22 +32,22 @@ export const userSlice = createSlice({
         },
 
         updateName: (state, action) => {
-            const { name} = action.payload;
+            const { name } = action.payload;
             state.name = name;
         },
-        
-        updateEmail: (state,action) => {
-            const { email} = action.payload;
+
+        updateEmail: (state, action) => {
+            const { email } = action.payload;
             state.email = email;
         },
 
-        updatePhone: (state,action) => {
-            const { phone} = action.payload ;
+        updatePhone: (state, action) => {
+            const { phone } = action.payload;
             state.phone = phone;
         },
 
-        updateAddress: (state,action) => {
-            const { address} = action.payload;
+        updateAddress: (state, action) => {
+            const { address } = action.payload;
             state.address = address;
         },
     }

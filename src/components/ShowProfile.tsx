@@ -3,18 +3,15 @@ import { IonContent, IonPage, IonAvatar, IonButton, IonInput, IonItem, IonCol, I
 import { call, home, idCard, logOut, mail, pencil, people, person } from 'ionicons/icons';
 import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
-import { UpdateUser } from '../redux/userSlice';
+import { UpdateUser, updateAddress, updateName, updatePhone } from '../redux/userSlice';
 
 import '../pages/Profile.css';
 import { RegisterFetch } from './axios/custom';
 import { ButtonFilled } from './common';
+import { useAppSelector } from '../redux/hooks';
 
 const ShowProfile: React.FC = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
-  const [rut, setRut] = useState('');
+  const user = useAppSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -31,9 +28,9 @@ const ShowProfile: React.FC = () => {
 
     const fetchUserData = async () => {
       const response = await RegisterFetch.post('/user/profile')
-      .then (response => response.data)
-      .then (data => dispatch(UpdateUser(data)))
-      .catch(error => console.error(error));
+        .then(response => response.data)
+        .then(data => dispatch(UpdateUser(data)))
+        .catch(error => console.error(error));
     }
 
     fetchUserData();
@@ -134,21 +131,22 @@ const ShowProfile: React.FC = () => {
           <IonIcon size='small' icon={person} color='tertiary'></IonIcon>
           <IonInput
             style={{ textAlign: 'center', fontSize: '12px' }}
-            value={username}
+            value={user.name}
             labelPlacement="stacked"
             placeholder="Nombre de usuario"
-            onIonInput={(e) => setUsername(e.detail.value!)}
+            onIonInput={(e) => dispatch(updateName({
+              name: e.detail.value!
+            }))}
           />
         </IonItem>
         <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px' }}>
           <IonIcon size='small' icon={mail} color='tertiary'></IonIcon>
           <IonInput
             style={{ textAlign: 'center', fontSize: '12px' }}
-            value={email}
+            value={user.email}
             labelPlacement="stacked"
             type="email"
             placeholder="Correo electrónico"
-            onIonInput={(e) => setEmail(e.detail.value!)}
             disabled
           />
         </IonItem>
@@ -156,20 +154,21 @@ const ShowProfile: React.FC = () => {
           <IonIcon size='small' icon={call} color='tertiary'></IonIcon>
           <IonInput
             style={{ textAlign: 'center', fontSize: '12px' }}
-            value={phone}
+            value={user.phone}
             labelPlacement="stacked"
             placeholder="Celular"
-            onIonInput={(e) => setPhone(e.detail.value!)}
+            onIonInput={(e) => dispatch(updatePhone({
+              phone: e.detail.value!
+            }))}
           />
         </IonItem>
         <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px' }}>
           <IonIcon size='small' icon={idCard} color='tertiary'></IonIcon>
           <IonInput
             style={{ textAlign: 'center', fontSize: '12px' }}
-            value={rut}
+            value={user.rut}
             labelPlacement="stacked"
             placeholder="RUT"
-            onIonInput={(e) => setRut(e.detail.value!)}
             disabled
           />
         </IonItem>
@@ -177,16 +176,18 @@ const ShowProfile: React.FC = () => {
           <IonIcon size='small' icon={home} color='tertiary'></IonIcon>
           <IonInput
             style={{ textAlign: 'center', fontSize: '12px' }}
-            value={address}
+            value={user.address}
             labelPlacement="stacked"
             placeholder="Sin dirección registrada"
-            onIonInput={(e) => setAddress(e.detail.value!)}
+            onIonInput={(e) => dispatch(updateAddress({
+              address: e.detail.value!
+            }))}
           />
         </IonItem>
         <ButtonFilled
           text="Actualizar datos"
           onClick={handleUpdateUser}
-          loading={loading} 
+          loading={loading}
           color='warning'
         />
         <ButtonFilled
