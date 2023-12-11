@@ -2,6 +2,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
 
+interface Contacts {
+    name: string;
+    email: string;
+    phone: string;
+}
+
+
 // Define a type for the slice state
 interface UserState {
     name: string;
@@ -9,6 +16,7 @@ interface UserState {
     rut: string;
     phone: string;
     address: string;
+    contacts: Contacts[];
 }
 
 const initialState: UserState = {
@@ -16,7 +24,8 @@ const initialState: UserState = {
     email: '',
     rut: '',
     phone: '',
-    address: ''
+    address: '',
+    contacts: []
 };
 
 export const userSlice = createSlice({
@@ -24,11 +33,14 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         UpdateUser: (state, action) => {
-            const { name, email, rut, phone } = action.payload;
+            const { name, email, rut, phone, contacts } = action.payload;
             state.name = name;
             state.email = email;
             state.rut = rut;
             state.phone = phone;
+            if (contacts !== undefined) {
+                state.contacts = contacts;
+            }
         },
 
         updateName: (state, action) => {
@@ -50,6 +62,10 @@ export const userSlice = createSlice({
             const { address } = action.payload;
             state.address = address;
         },
+        createContact: (state, action) => {
+            const { name, email, phone } = action.payload;
+            state.contacts.push({ name, email, phone });
+        }
     }
 });
 
