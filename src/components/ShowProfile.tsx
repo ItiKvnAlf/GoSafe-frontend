@@ -1,46 +1,71 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonPage, IonAvatar, IonButton, IonInput, IonItem, IonCol, IonGrid, IonRow, IonIcon, IonFab, IonFabButton } from '@ionic/react';
+import { IonContent, IonPage, IonAvatar, IonButton, IonInput, IonItem, IonCol, IonGrid, IonRow, IonIcon, IonFab, IonFabButton, IonAlert } from '@ionic/react';
 import { call, home, idCard, logOut, mail, pencil, people, person } from 'ionicons/icons';
-import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { UpdateUser, updateAddress, updateName, updatePhone } from '../redux/userSlice';
-
 import '../pages/Profile.css';
-import { RegisterFetch } from './axios/custom';
 import { ButtonFilled } from './common';
 import { useAppSelector } from '../redux/hooks';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 const ShowProfile: React.FC = () => {
   const user = useAppSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const dispatch = useDispatch();
+  const token = localStorage.getItem('token');
+  const userID = jwtDecode(token!).own;
+  const header_config = {
+    headers: { Authorization: `Bearer ${token}` }
+  };
+  const data_config = {
+    name: user.name,
+    phone: user.phone,
+    address: user.address
+
+  };
+
 
   useEffect(() => {
     document.title = 'Perfil';
     const token = localStorage.getItem('token');
     const token_expires = localStorage.getItem('token_expires');
 
-    if (token === null || token_expires === null) {
-      (window as any).location = '/login';
-    } else if (new Date(token_expires) < new Date()) {
-      (window as any).location = '/login';
-    }
+    // if (token === null || token_expires === null) {
+    //   (window as any).location = '/login';
+    // } else if (new Date(token_expires) < new Date()) {
+    //   (window as any).location = '/login';
+    // }
 
-    const fetchUserData = async () => {
-      const response = await RegisterFetch.post('/user/profile')
-        .then(response => response.data)
-        .then(data => dispatch(UpdateUser(data)))
-        .catch(error => console.error(error));
+    const ProfileFetch = async () => {
+      const response = await axios.get("/users/" + userID, header_config);
+      const data = response.data.data;
+      dispatch(UpdateUser({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        rut: data.rut,
+        address: data.address,
+        contacts: data.contacts
+      }));
     }
-
-    fetchUserData();
+    ProfileFetch();
 
   }, []);
 
   const handleUpdateUser = () => {
-    setLoading(true);
-    console.log('Update user logic here');
-    setLoading(false);
+    const ProfileUpdate = async () => {
+      const response = await axios.patch(
+        "/users/" + userID,
+        data_config,
+        header_config
+      );
+      if (response.status === 200) {
+        setSuccess(true);
+      }
+    }
+    ProfileUpdate();
   };
 
   const handleResetPassword = () => {
@@ -196,6 +221,14 @@ const ShowProfile: React.FC = () => {
           loading={loading}
           color='warning'
         />
+        <IonAlert
+          isOpen={success}
+          header="Datos actualizados"
+          subHeader=":D"
+          message="Los datos han sido actualizados correctamente."
+          buttons={['OK']}
+          onDidDismiss={() => setSuccess(false)}
+        ></IonAlert>
       </IonContent>
     </IonPage>
   );
