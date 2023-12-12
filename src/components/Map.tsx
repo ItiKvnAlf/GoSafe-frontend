@@ -62,7 +62,6 @@ const MyMap: React.FC<MyMapProps> = ({ onOriginSelected, onDestinationSelected }
 
           L.DomEvent.on(startBtn, 'click', function() {
             const waypoint = L.Routing.waypoint(e.latlng);
-            console.log(waypoint.latLng);
             dispatch(setStartPoint({
               startPoint_long: waypoint.latLng.lng.toString(),
               startPoint_lat: waypoint.latLng.lat.toString(),
@@ -73,7 +72,6 @@ const MyMap: React.FC<MyMapProps> = ({ onOriginSelected, onDestinationSelected }
 
         L.DomEvent.on(destBtn, 'click', function() {
           const waypoint = L.Routing.waypoint(e.latlng);
-          console.log(waypoint.latLng);
           dispatch(setEndPoint({
             endPoint_long: waypoint.latLng.lng.toString(),
             endPoint_lat: waypoint.latLng.lat.toString(),

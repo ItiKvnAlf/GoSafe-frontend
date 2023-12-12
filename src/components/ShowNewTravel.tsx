@@ -1,10 +1,16 @@
-import { IonContent, IonItem, IonPage, IonInput, IonIcon, IonLabel, IonList, IonTextarea } from '@ionic/react';
+import { IonContent, IonItem, IonPage, IonInput, IonIcon, IonLabel, IonList, IonTextarea, IonFab, IonFabButton } from '@ionic/react';
 import MyMap from './Map';
+import MyMapRoute from './MapRoute';
 import React, { useEffect, useState } from 'react';
-import { mail } from 'ionicons/icons';
+import { camera, mail } from 'ionicons/icons';
 import ButtonFilled from './common/ButtonFilled';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { setEndPoint, setStartPoint } from '../redux/travelSlice';
+import L from 'leaflet';
+
+function newLatLgn (lat: string, lng: string) {
+  return new L.LatLng(parseFloat(lat), parseFloat(lng));
+}
 
 const ShowNewTravel: React.FC = () => {
   const [origin, setOrigin] = useState<L.LatLng | null>(null);
@@ -62,7 +68,12 @@ const ShowNewTravel: React.FC = () => {
 
   const handleStartTravel = () => {
     setLoading(true);
-    console.log('Start travel logic here');
+    setVerificationStep('traveling');
+    setLoading(false);
+  }
+
+  const handlePicture = () => {
+    setLoading(true);
     setLoading(false);
   }
 
@@ -116,6 +127,29 @@ const ShowNewTravel: React.FC = () => {
               loading={loading}
             />
           </>  
+        )}
+        {verificationStep === 'traveling' && (
+          <>
+            <IonFab vertical="top" horizontal="start" slot="fixed">
+              <IonFabButton size="small" color="warning" onClick={handlePicture}>
+                <IonIcon icon={camera} color="light" />
+              </IonFabButton>
+            </IonFab>
+            <IonLabel>
+              <h3 style={{textAlign: "center", marginTop: "10%", marginBottom: "5%"}}>Viajando...</h3>
+            </IonLabel>
+            <MyMapRoute onOriginSelected={newLatLgn(travel.startPoint_lat,travel.startPoint_long)}  onDestinationSelected={newLatLgn(travel.endPoint_lat,travel.endPoint_long)} />
+            <ButtonFilled
+              text="Finalizar viaje"
+              onClick={handleGoBackLocation}
+              loading={loading}
+            />
+            <ButtonFilled
+              text="Cancelar"
+              onClick={handleGoBackLocation}
+              loading={loading}
+            />
+          </> 
         )}
       </IonContent>
     </IonPage>
