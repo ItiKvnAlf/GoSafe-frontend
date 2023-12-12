@@ -114,7 +114,7 @@ const ShowNewTravel: React.FC = () => {
               <h3 style={{textAlign: "center", marginTop: "10%", marginBottom: "5%"}}>Mensaje de emergencia:</h3>
             </IonLabel>
             <IonItem style={{ marginTop: "5%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "20px" }}>
-              <IonTextarea rows={5} value={emergencyMessage} style={{ margin: '10px' }} placeholder="Introduce tu mensaje de emergencia"></IonTextarea>
+              <IonTextarea rows={8} value={emergencyMessage} style={{ margin: '10px' }} placeholder="Introduce tu mensaje de emergencia"></IonTextarea>
             </IonItem>
             <ButtonFilled
               text="Comenzar viaje"

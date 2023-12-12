@@ -1,5 +1,6 @@
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import LRM from 'leaflet-routing-machine';
 import { useEffect, useRef } from 'react';
 
 interface MyMapProps {
@@ -30,10 +31,9 @@ const MyMapRoute: React.FC<MyMapProps> = ({ onOriginSelected, onDestinationSelec
   
           L.Routing.control({
             waypoints: [waypointStart, waypointEnd],
-            routeWhileDragging: true,
             show: false,
           }).addTo(map);
-        
+
           mapInstanceRef.current = map;
   
           setTimeout(() => {
@@ -41,6 +41,7 @@ const MyMapRoute: React.FC<MyMapProps> = ({ onOriginSelected, onDestinationSelec
           }, 0);
         }
       };
+      
   
       initializeMap();
   
