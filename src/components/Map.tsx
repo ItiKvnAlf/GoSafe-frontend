@@ -45,6 +45,7 @@ const MyMap: React.FC<MyMapProps> = ({ onOriginSelected, onDestinationSelected }
         const routingControl = L.Routing.control({
           waypoints: [],
           routeWhileDragging: true,
+          show: false,
         }).addTo(map);
       
         mapInstanceRef.current = map;
