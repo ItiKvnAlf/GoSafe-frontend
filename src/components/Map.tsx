@@ -1,10 +1,22 @@
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
+import 'leaflet-routing-machine';
 import { useEffect, useRef } from 'react';
 
 interface MyMapProps {
   onOriginSelected: (latLng: L.LatLng) => void;
   onDestinationSelected: (latLng: L.LatLng) => void;
+}
+
+function createButton(label: string, container: HTMLElement) {
+  const btn = document.createElement('button');
+  btn.innerHTML = label;
+  btn.addEventListener('click', function() {
+    container.style.display = 'none';
+  });
+  container.appendChild(btn);
+  return btn;
 }
 
 const MyMap: React.FC<MyMapProps> = ({ onOriginSelected, onDestinationSelected }) => {
@@ -26,16 +38,36 @@ const MyMap: React.FC<MyMapProps> = ({ onOriginSelected, onDestinationSelected }
           detectRetina: false,
         }).addTo(map);
 
-        map.on('click', (e: L.LeafletMouseEvent) => {
-          if (onOriginSelected && onDestinationSelected) {
-            L.marker(e.latlng).addTo(map);
-            if (Math.random() > 0.5) {
-              onOriginSelected(e.latlng);
-            } else {
-              onDestinationSelected(e.latlng);
-            }
-          }
+        const routingControl = L.Routing.control({
+          waypoints: [],
+          routeWhileDragging: true,
+        }).addTo(map);
+      
+        mapInstanceRef.current = map;
+
+        map.on('click', function(e) {
+          var container = L.DomUtil.create('div'),
+              startBtn = createButton('Iniciar desde esta ubicación', container),
+              destBtn = createButton('Ir a esta ubicación', container);
+              
+      
+          L.popup()
+              .setContent(container)
+              .setLatLng(e.latlng)
+              .openOn(map);
+
+          L.DomEvent.on(startBtn, 'click', function() {
+            const waypoint = L.Routing.waypoint(e.latlng);
+            routingControl.spliceWaypoints(0, 1, waypoint);
+            map.closePopup();
         });
+
+        L.DomEvent.on(destBtn, 'click', function() {
+          const waypoint = L.Routing.waypoint(e.latlng);
+            routingControl.spliceWaypoints(routingControl.getWaypoints().length - 1, 1, waypoint);
+            map.closePopup();
+        });
+      });
 
         mapInstanceRef.current = map;
 
