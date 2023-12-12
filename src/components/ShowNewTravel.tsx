@@ -1,8 +1,16 @@
-import { IonContent, IonItem, IonPage, IonInput, IonImg, IonButton, IonIcon } from '@ionic/react';
+import { IonContent, IonItem, IonPage, IonInput, IonIcon, IonLabel, IonList, IonTextarea, IonFab, IonFabButton } from '@ionic/react';
 import MyMap from './Map';
+import MyMapRoute from './MapRoute';
 import React, { useEffect, useState } from 'react';
-import { car, mail, map } from 'ionicons/icons';
+import { camera, mail } from 'ionicons/icons';
 import ButtonFilled from './common/ButtonFilled';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { setEndPoint, setStartPoint } from '../redux/travelSlice';
+import L from 'leaflet';
+
+function newLatLgn (lat: string, lng: string) {
+  return new L.LatLng(parseFloat(lat), parseFloat(lng));
+}
 
 const ShowNewTravel: React.FC = () => {
   const [origin, setOrigin] = useState<L.LatLng | null>(null);
@@ -13,7 +21,11 @@ const ShowNewTravel: React.FC = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [verificationStep, setVerificationStep] = useState('location');
-  const [emergencyMessage, setEmergencyMessage] = useState('Este es un mensaje de alerta desde GoSafe. Se adjuntan en este mensaje las coordenadas de ubicación desde donde se envía esta alerta, además de información adicional como el origen/destino o imagenes.');
+  const [emergencyMessage, setEmergencyMessage] = useState('Este es un mensaje de alerta desde GoSafe. Se adjuntan en este mensaje las coordenadas de ubicación desde donde se envía esta alerta, además de información adicional como el origen/destino o imágenes.');
+
+  const travel = useAppSelector((state) => state.travel);
+  const user = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     document.title = 'Nueva ruta';
@@ -25,7 +37,7 @@ const ShowNewTravel: React.FC = () => {
     }else if (new Date(token_expires) < new Date()) {
       (window as any).location = '/login';
     }
-  }, []);
+  }, [verificationStep]);
 
   const handleOriginSelected = (latLng: L.LatLng) => {
     setOrigin(latLng);
@@ -37,22 +49,31 @@ const ShowNewTravel: React.FC = () => {
 
   const handleLocationSelected = () => {
     setLoading(true);
-    if (origin === null || destination === null) {
-      setAlertMessage('El nombre de origen y destino son requeridos.');
-      setShowAlert(true);
-      setLoading(false);
-      return;
-    }
-    else{
-      console.log('Location selected | Origin: ', originName, ' Destination: ', destinationName); //enviar datos al backend
-      setVerificationStep('emergencyInfo');
-    }
+    console.log('Location selected | Origin: ', originName, ' Destination: ', destinationName); //enviar datos al backend
+    setVerificationStep('emergencyInfo');
     setLoading(false);
   };
 
+  const handleGoBackLocation = () => {
+    setVerificationStep('location');
+    dispatch(setStartPoint({
+      startPoint_long: '',
+      startPoint_lat: '',
+    }));
+    dispatch(setEndPoint({
+      endPoint_long: '',
+      endPoint_lat: '',
+    }));
+  }
+
   const handleStartTravel = () => {
     setLoading(true);
-    console.log('Start travel logic here');
+    setVerificationStep('traveling');
+    setLoading(false);
+  }
+
+  const handlePicture = () => {
+    setLoading(true);
     setLoading(false);
   }
 
@@ -61,32 +82,74 @@ const ShowNewTravel: React.FC = () => {
       <IonContent fullscreen color="light">
         {verificationStep === 'location' && (
           <><MyMap onOriginSelected={handleOriginSelected} onDestinationSelected={handleDestinationSelected} />
-          <IonItem style ={{marginTop: "3%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px"}}>
-            <IonIcon icon={car} color="primary" size="large"></IonIcon>
-            <IonInput style ={{textAlign: "center"}} value={originName} labelPlacement="stacked" placeholder="Punto de origen" onIonInput={(e) => setOriginName(e.detail.value!)}></IonInput>
-          </IonItem>
-          <IonItem style ={{marginTop: "1%", marginBottom: "3%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px"}}>
-            <IonIcon icon={map} color="primary" size="large"></IonIcon>
-            <IonInput style ={{textAlign: "center"}} value={destinationName} labelPlacement="stacked" placeholder="Punto de destino" onIonInput={(e) => setDestinationName(e.detail.value!)}></IonInput>
-          </IonItem>
-          <ButtonFilled
+          {travel.startPoint_lat && travel.startPoint_long && travel.endPoint_lat && travel.endPoint_long &&(
+          <><></><ButtonFilled
               text="Siguiente"
               onClick={handleLocationSelected}
               loading={loading}
             />
+            </>
+          )}
           </>
         )}
         {verificationStep === 'emergencyInfo' && (
           <>
-            <IonItem style={{ marginTop: "50%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "50px" }}></IonItem>
-            <IonIcon icon = {mail} color='tertiary'></IonIcon>
-            <IonInput style={{ textAlign: "center" }} value={emergencyMessage} labelPlacement="stacked" placeholder={emergencyMessage} onIonInput={(e) => setEmergencyMessage(e.detail.value!)}></IonInput>
+            <IonLabel>
+              <h3 style={{textAlign: "center", marginTop: "10%", marginBottom: "5%"}}>Seleccionar contactos:</h3>
+            </IonLabel>
+            <>
+              {user.contacts.length === 0 ? (
+                <p style={{textAlign: "center", marginLeft: "5%", marginRight: "5%"}}>'No hay contactos'</p>
+              ) : (
+                <IonList style={{textAlign: "center", marginLeft: "5%", marginRight: "5%"}}>
+                  {user.contacts.map((contact, index) => (
+                    <IonItem key={index}>
+                      <IonLabel>{contact.name}</IonLabel>
+                    </IonItem>
+                  ))}
+                </IonList>
+              )}
+            </>
+            <IonLabel>
+              <h3 style={{textAlign: "center", marginTop: "10%", marginBottom: "5%"}}>Mensaje de emergencia:</h3>
+            </IonLabel>
+            <IonItem style={{ marginTop: "5%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "20px" }}>
+              <IonTextarea rows={5} value={emergencyMessage} style={{ margin: '10px' }} placeholder="Introduce tu mensaje de emergencia"></IonTextarea>
+            </IonItem>
             <ButtonFilled
               text="Comenzar viaje"
               onClick={handleStartTravel}
               loading={loading}
             />
+            <ButtonFilled
+              text="Cancelar"
+              onClick={handleGoBackLocation}
+              loading={loading}
+            />
           </>  
+        )}
+        {verificationStep === 'traveling' && (
+          <>
+            <IonFab vertical="top" horizontal="start" slot="fixed">
+              <IonFabButton size="small" color="warning" onClick={handlePicture}>
+                <IonIcon icon={camera} color="light" />
+              </IonFabButton>
+            </IonFab>
+            <IonLabel>
+              <h3 style={{textAlign: "center", marginTop: "10%", marginBottom: "5%"}}>Viajando...</h3>
+            </IonLabel>
+            <MyMapRoute onOriginSelected={newLatLgn(travel.startPoint_lat,travel.startPoint_long)}  onDestinationSelected={newLatLgn(travel.endPoint_lat,travel.endPoint_long)} />
+            <ButtonFilled
+              text="Finalizar viaje"
+              onClick={handleGoBackLocation}
+              loading={loading}
+            />
+            <ButtonFilled
+              text="Cancelar"
+              onClick={handleGoBackLocation}
+              loading={loading}
+            />
+          </> 
         )}
       </IonContent>
     </IonPage>
