@@ -58,7 +58,6 @@ const ShowLogin: React.FC = () => {
         try {
             const response = await LoginFecth().post('/auth/signIn', userData)
             const payload = response.data;
-            console.log("payload:", payload.token)
 
             dispatch(login({
                 token: payload.token,
@@ -81,7 +80,6 @@ const ShowLogin: React.FC = () => {
                 setShowAlert(true);
                 setLoading(false);
             }
-            console.log("data payload:", payload.data)
             dispatch(UpdateUser({
                 email: payload.data.email,
                 rut: payload.data.rut,
