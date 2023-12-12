@@ -3,7 +3,7 @@ import L from 'leaflet';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import 'leaflet-routing-machine';
 import { setStartPoint, setEndPoint } from '../redux/travelSlice';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { useAppDispatch } from '../redux/hooks';
 import { useEffect, useRef } from 'react';
 
 interface MyMapProps {
@@ -25,8 +25,6 @@ const MyMap: React.FC<MyMapProps> = ({ onOriginSelected, onDestinationSelected }
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   
-  const travel = useAppSelector((state) => state.travel);
-  const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
