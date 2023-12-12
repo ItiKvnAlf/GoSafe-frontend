@@ -15,6 +15,8 @@ const ShowNewTravel: React.FC = () => {
   const [verificationStep, setVerificationStep] = useState('location');
   const [emergencyMessage, setEmergencyMessage] = useState('Este es un mensaje de alerta desde GoSafe. Se adjuntan en este mensaje las coordenadas de ubicación desde donde se envía esta alerta, además de información adicional como el origen/destino o imagenes.');
 
+
+
   useEffect(() => {
     document.title = 'Nueva ruta';
     const token = localStorage.getItem('token');
@@ -25,7 +27,7 @@ const ShowNewTravel: React.FC = () => {
     }else if (new Date(token_expires) < new Date()) {
       (window as any).location = '/login';
     }
-  }, []);
+  }, [verificationStep]);
 
   const handleOriginSelected = (latLng: L.LatLng) => {
     setOrigin(latLng);
@@ -38,7 +40,7 @@ const ShowNewTravel: React.FC = () => {
   const handleLocationSelected = () => {
     setLoading(true);
     if (origin === null || destination === null) {
-      setAlertMessage('El nombre de origen y destino son requeridos.');
+      setAlertMessage('El nombre de origen y destino son requeridos.'); 
       setShowAlert(true);
       setLoading(false);
       return;
@@ -61,14 +63,6 @@ const ShowNewTravel: React.FC = () => {
       <IonContent fullscreen color="light">
         {verificationStep === 'location' && (
           <><MyMap onOriginSelected={handleOriginSelected} onDestinationSelected={handleDestinationSelected} />
-          <IonItem style ={{marginTop: "3%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px"}}>
-            <IonIcon icon={car} color="primary" size="large"></IonIcon>
-            <IonInput style ={{textAlign: "center"}} value={originName} labelPlacement="stacked" placeholder="Punto de origen" onIonInput={(e) => setOriginName(e.detail.value!)}></IonInput>
-          </IonItem>
-          <IonItem style ={{marginTop: "1%", marginBottom: "3%", marginLeft: "10%", marginRight: "10%", borderRadius: "50px"}}>
-            <IonIcon icon={map} color="primary" size="large"></IonIcon>
-            <IonInput style ={{textAlign: "center"}} value={destinationName} labelPlacement="stacked" placeholder="Punto de destino" onIonInput={(e) => setDestinationName(e.detail.value!)}></IonInput>
-          </IonItem>
           <ButtonFilled
               text="Siguiente"
               onClick={handleLocationSelected}

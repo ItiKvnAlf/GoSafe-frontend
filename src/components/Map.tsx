@@ -2,6 +2,8 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import 'leaflet-routing-machine';
+import { setStartPoint, setEndPoint } from '../redux/travelSlice';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useEffect, useRef } from 'react';
 
 interface MyMapProps {
@@ -22,6 +24,10 @@ function createButton(label: string, container: HTMLElement) {
 const MyMap: React.FC<MyMapProps> = ({ onOriginSelected, onDestinationSelected }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
+  
+  const travel = useAppSelector((state) => state.travel);
+  const user = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const initializeMap = () => {
@@ -58,13 +64,23 @@ const MyMap: React.FC<MyMapProps> = ({ onOriginSelected, onDestinationSelected }
 
           L.DomEvent.on(startBtn, 'click', function() {
             const waypoint = L.Routing.waypoint(e.latlng);
+            console.log(waypoint.latLng);
+            dispatch(setStartPoint({
+              startPoint_long: waypoint.latLng.lng.toString(),
+              startPoint_lat: waypoint.latLng.lat.toString(),
+            }));
             routingControl.spliceWaypoints(0, 1, waypoint);
             map.closePopup();
         });
 
         L.DomEvent.on(destBtn, 'click', function() {
           const waypoint = L.Routing.waypoint(e.latlng);
-            routingControl.spliceWaypoints(routingControl.getWaypoints().length - 1, 1, waypoint);
+          console.log(waypoint.latLng);
+          dispatch(setEndPoint({
+            endPoint_long: waypoint.latLng.lng.toString(),
+            endPoint_lat: waypoint.latLng.lat.toString(),
+          }));
+          routingControl.spliceWaypoints(routingControl.getWaypoints().length - 1, 1, waypoint);
             map.closePopup();
         });
       });
