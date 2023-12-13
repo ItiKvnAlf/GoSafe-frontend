@@ -88,36 +88,29 @@ function ShowHome() {
               <Route path="/settings" render={() => <Settings />} exact={true} />
             </IonRouterOutlet>
 
-            <IonTabBar slot="bottom">
-              <IonTabButton tab="profile" href="/profile">
-                <IonIcon icon={personCircle}></IonIcon>
-                <IonLabel style={{ fontSize: '80%' }}>Perfil</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="newTravel" href="/newTravel" >
-                <IonIcon icon={location}></IonIcon>
-                <IonLabel style={{ fontSize: '80%' }}>Nuevo Viaje</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="home" href="/home">
-                <IonIcon icon={home}></IonIcon>
-                <IonLabel style={{ fontSize: '80%' }}>Inicio</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="emergency" href="/emergency">
-                <IonIcon icon={alertCircle}></IonIcon>
-                <IonLabel style={{ fontSize: '80%' }}>Emergencia</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="settings" href="/settings">
-                <IonIcon icon={settings}></IonIcon>
-                <IonLabel style={{ fontSize: '80%' }}>Ajustes</IonLabel>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
-        </IonReactRouter>
+        <IonTabBar slot="bottom">
+          <IonTabButton tab="profile" href="/profile">
+            <IonIcon icon={personCircle}></IonIcon>
+            <IonLabel style={{ fontSize: '80%' }}>Perfil</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="newTravel" href="/newTravel" >
+            <IonIcon icon={location}></IonIcon>
+            <IonLabel style={{ fontSize: '80%' }}>Nuevo Viaje</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="home" href="/home">
+            <IonIcon icon={home}></IonIcon>
+            <IonLabel style={{ fontSize: '80%' }}>Inicio</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="settings" href="/settings">
+            <IonIcon icon={settings}></IonIcon>
+            <IonLabel style={{ fontSize: '80%' }}>Ajustes</IonLabel>
+          </IonTabButton>
+        </IonTabBar>
+      </IonTabs>
+      
+      </IonReactRouter>
       </IonContent>
     </IonReactRouter>
   );
 }
 export default ShowHome;
-
-function dispatch(arg0: any) {
-  throw new Error('Function not implemented.');
-}
