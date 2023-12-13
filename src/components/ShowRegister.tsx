@@ -22,7 +22,7 @@ const ShowRegister: React.FC = () => {
     useEffect(() => {
         document.title = 'Registro';
         if (!showSuccessAlert && redirectToHome) {
-            (history as any).push('/home');
+            (history as any).push('/login');
             setLoading(false);
         }
     }, [showSuccessAlert, redirectToHome]);
@@ -117,8 +117,8 @@ const ShowRegister: React.FC = () => {
             return;
         } else {
             try {
-                const response = await axios.post(import.meta.env.VITE_API_URL + '/auth/signUp', userData)
-                if (response.data.message === 'Success') {
+                const response = await axios.post('/auth/signUp', userData)
+                if (response.data.message === 'success') {
                     setAlertMessage('Registro exitoso');
                     setShowSuccessAlert(true);
                     setRedirectToHome(true);

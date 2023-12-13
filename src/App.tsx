@@ -27,6 +27,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import Contacts from './pages/Contacts';
 
 setupIonicReact();
 
@@ -57,6 +58,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/register">
           <Register />
+        </Route>
+        <Route exact path="/contacts">
+          <Contacts />
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
