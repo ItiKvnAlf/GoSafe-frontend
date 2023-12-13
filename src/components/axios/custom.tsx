@@ -20,7 +20,6 @@ axios.defaults.baseURL = api_url;
 
 const token = localStorage.getItem('token');
 if (token) {
-    console.log("token:", token);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
 

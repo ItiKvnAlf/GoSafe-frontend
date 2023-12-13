@@ -11,6 +11,8 @@ import ContactsList from './common/ContactsList';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { Geolocation } from '@capacitor/geolocation';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 function newLatLgn (lat: string, lng: string) {
   return new L.LatLng(parseFloat(lat), parseFloat(lng));
@@ -29,7 +31,10 @@ const ShowNewTravel: React.FC = () => {
   const dispatch = useAppDispatch();
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [travelId, setTravelId] = useState('');
   const [currentLocation, setCurrentLocation] = useState<{ latitude: number, longitude: number } | null>(null);
+  const token = localStorage.getItem('token');
+  const userID = jwtDecode(token!).own;
 
   useEffect(() => {
     document.title = 'Nueva ruta';
@@ -51,8 +56,17 @@ const ShowNewTravel: React.FC = () => {
     setDestination(latLng);
   };
 
-  const handleLocationSelected = () => {
+  const handleLocationSelected = async () => {
     setLoading(true);
+    const codeData = {
+      start_point: (travel.startPoint_lat + ',' + travel.startPoint_long),
+      end_point: (travel.endPoint_lat + ',' + travel.endPoint_long),
+      user_id: userID
+    };
+    const response = await axios.post(import.meta.env.VITE_API_URL + `/travel-routes`, codeData);
+    
+    setTravelId(response.data.data.id)
+
     setVerificationStep('emergencyInfo');
     setLoading(false);
   };
@@ -69,8 +83,14 @@ const ShowNewTravel: React.FC = () => {
     }));
   }
 
-  const handleStartTravel = () => {
+  const handleStartTravel = async () => {
     setLoading(true);
+    const message = {
+      default_message: emergencyMessage,
+      travel_route_id: travelId,
+    };
+    const messageResponse = await axios.post(import.meta.env.VITE_API_URL + `/messages`, message);
+
     setVerificationStep('traveling');
     setLoading(false);
   }
@@ -102,7 +122,7 @@ const ShowNewTravel: React.FC = () => {
     setShowAlert(false);
   };
 
-  const handleAlert = () => {
+  const handleAlert = async () => {
     const getCurrentLocation = async () => {
       try {
         const position = await Geolocation.getCurrentPosition();
@@ -112,9 +132,23 @@ const ShowNewTravel: React.FC = () => {
         console.error('Error al obtener la ubicación', error);
       }
     };
-
     getCurrentLocation();
-    console.log(currentLocation);
+    
+    const picturePost = {
+      image: capturedImage,
+      travel_route_id: travelId,
+    };
+    const responsePicture = await axios.post(import.meta.env.VITE_API_URL + `/pictures`, picturePost);
+
+    //transformar currentLocation a string
+    const currentLocationString = currentLocation?.latitude + ',' + currentLocation?.longitude;
+    
+    const geolocationPost = {
+      current_point: currentLocationString,
+      travel_route_id: travelId,
+    };
+    const responseGeo = await axios.post(import.meta.env.VITE_API_URL + `/geolocations`, geolocationPost);
+    
   };
 
   return (
