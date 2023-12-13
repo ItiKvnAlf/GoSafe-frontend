@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { setEndPoint, setStartPoint } from '../redux/travelSlice';
 import L from 'leaflet';
 import ContactsList from './common/ContactsList';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 function newLatLgn (lat: string, lng: string) {
   return new L.LatLng(parseFloat(lat), parseFloat(lng));
@@ -69,10 +70,23 @@ const ShowNewTravel: React.FC = () => {
     setLoading(false);
   }
 
-  const handlePicture = () => {
-    setLoading(true);
-    setLoading(false);
-  }
+  const handlePicture = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        source: CameraSource.Camera, // Puedes usar CameraSource.Photos o CameraSource.Prompt según tus necesidades
+        resultType: CameraResultType.Base64,
+      });
+
+      // Aquí puedes utilizar la imagen (image.base64String) como desees
+
+    } catch (error) {
+      console.error('Error al tomar la foto', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleContactSelectionChange = (selected: boolean) => {
     setIsContactSelected(selected);
