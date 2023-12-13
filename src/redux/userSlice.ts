@@ -10,7 +10,7 @@ interface Contacts {
 
 
 // Define a type for the slice state
-interface UserState {
+export interface UserState {
     name: string;
     email: string;
     rut: string;
@@ -33,7 +33,7 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         UpdateUser: (state, action) => {
-            const { name, email, rut, phone, contacts } = action.payload;
+            const { name, email, rut, phone, contacts, address } = action.payload;
             state.name = name;
             state.email = email;
             state.rut = rut;
@@ -41,6 +41,7 @@ export const userSlice = createSlice({
             if (contacts !== undefined) {
                 state.contacts = contacts;
             }
+            state.address = address;
         },
 
         updateName: (state, action) => {
@@ -62,14 +63,18 @@ export const userSlice = createSlice({
             const { address } = action.payload;
             state.address = address;
         },
+        updateContacts: (state, action) => {
+            const { contacts } = action.payload;
+            state.contacts = contacts;
+        },
         createContact: (state, action) => {
             const { name, email, phone } = action.payload;
-            state.contacts.push({ name, email, phone });
+            state.contacts = [...state.contacts, { name, email, phone }];
         }
     }
 });
 
-export const { UpdateUser, updateName, updateEmail, updatePhone, updateAddress } = userSlice.actions;
+export const { UpdateUser, updateName, updateEmail, updatePhone, updateAddress, updateContacts, createContact } = userSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUser = (state: RootState) => state.user;
