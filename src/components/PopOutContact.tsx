@@ -1,8 +1,8 @@
 import { IonAlert } from "@ionic/react";
 import { useContacts } from "../hooks/useContacts";
-import { ContactCreate } from "./axios/custom";
 import { useAppSelector } from "../redux/hooks";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 
 
@@ -33,19 +33,28 @@ const PopOutContact: React.FC = () => {
         setPhone(text);
     }
 
+
     const handleCreateContact = async () => {
-        const response = await ContactCreate().post("/contacts",
-            {
-                user_id: userID,
-                name: name,
-                email: email,
-                phone: phone,
-            },
-        );
-        if (response.status === 201) {
-            console.log("Contacto creado");
-        }
+        console.log("handleCreateContact");
+        console.log(userID, name, email, phone);
+        // const response = await axios.post("/contacts",
+        //     {
+        //         user_id: userID,
+        //         name: name,
+        //         email: email,
+        //         phone: phone,
+        //     },
+        //     {
+        //         headers: { Authorization: `Bearer ${auth.token}` }
+        //     }
+        // );
+        // if (response.status === 201) {
+        //     console.log("Contacto creado");
+        // }
     }
+
+
+
     return (
         <>
             <IonAlert
@@ -60,17 +69,21 @@ const PopOutContact: React.FC = () => {
                 ]}
                 inputs={[
                     {
+                        name: 'name',
                         placeholder: 'Name (max 8 characters)',
                         type: 'text',
                         attributes: {
                             maxlength: 15,
 
                         },
-                        handler(input) {
-                            handleName(input.value);
+                        handler: (input) => {
+                            console.log("name:", input.attributes)
+
                         },
+
                     },
                     {
+                        name: 'email',
                         placeholder: 'email',
                         type: 'email',
                         attributes: {
@@ -78,22 +91,27 @@ const PopOutContact: React.FC = () => {
 
                         },
                         handler(input) {
+                            console.log("email:", input)
                             handleEmail(input.value);
                         },
                     },
                     {
+                        name: 'phone',
                         placeholder: 'phone (9xxxxxxxx)',
                         attributes: {
                             maxlength: 9,
                             minlength: 9,
                         },
                         handler(input) {
+                            console.log("phone:", input)
                             handlePhone(input.value);
                         },
                     },
+                ]
+
+                }
 
 
-                ]}
             ></IonAlert>
         </>
     );
