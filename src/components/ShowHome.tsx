@@ -102,10 +102,6 @@ function ShowHome() {
             <IonIcon icon={home}></IonIcon>
             <IonLabel style={{ fontSize: '80%' }}>Inicio</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="emergency" href="/emergency">
-            <IonIcon icon={alertCircle}></IonIcon>
-            <IonLabel style={{ fontSize: '80%' }}>Emergencia</IonLabel>
-          </IonTabButton>
           <IonTabButton tab="settings" href="/settings">
             <IonIcon icon={settings}></IonIcon>
             <IonLabel style={{ fontSize: '80%' }}>Ajustes</IonLabel>

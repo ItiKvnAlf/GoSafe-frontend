@@ -1,13 +1,16 @@
-import { IonContent, IonItem, IonPage, IonInput, IonIcon, IonLabel, IonList, IonTextarea, IonFab, IonFabButton, IonCheckbox } from '@ionic/react';
+import { IonContent, IonItem, IonPage, IonInput, IonIcon, IonLabel, IonList, IonTextarea, IonFab, IonFabButton, IonCheckbox, IonAlert } from '@ionic/react';
 import MyMap from './Map';
 import MyMapRoute from './MapRoute';
 import React, { useEffect, useState } from 'react';
-import { camera, mail } from 'ionicons/icons';
+import { alertCircle, camera, mail } from 'ionicons/icons';
 import ButtonFilled from './common/ButtonFilled';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { setEndPoint, setStartPoint } from '../redux/travelSlice';
 import L from 'leaflet';
 import ContactsList from './common/ContactsList';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Capacitor } from '@capacitor/core';
+import { Geolocation } from '@capacitor/geolocation';
 
 function newLatLgn (lat: string, lng: string) {
   return new L.LatLng(parseFloat(lat), parseFloat(lng));
@@ -20,10 +23,13 @@ const ShowNewTravel: React.FC = () => {
   const [isContactSelected, setIsContactSelected] = useState(false);
   const [verificationStep, setVerificationStep] = useState('location');
   const [emergencyMessage, setEmergencyMessage] = useState('Este es un mensaje de alerta desde GoSafe. Se adjuntan en este mensaje las coordenadas de ubicación desde donde se envía esta alerta, además de información adicional como el origen/destino o imágenes.');
-
   const travel = useAppSelector((state) => state.travel);
   const userSelected = useAppSelector((state) => state.user);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [currentLocation, setCurrentLocation] = useState<{ latitude: number, longitude: number } | null>(null);
 
   useEffect(() => {
     document.title = 'Nueva ruta';
@@ -69,13 +75,46 @@ const ShowNewTravel: React.FC = () => {
     setLoading(false);
   }
 
-  const handlePicture = () => {
-    setLoading(true);
-    setLoading(false);
-  }
+  const handlePicture = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        source: CameraSource.Camera, // Puedes usar CameraSource.Photos o CameraSource.Prompt según tus necesidades
+        resultType: CameraResultType.Base64,
+      });
+
+      setCapturedImage(`data:image/jpeg;base64,${image.base64String}`);
+      // Aquí puedes utilizar la imagen (image.base64String) como desees
+
+    } catch (error) {
+      console.error('Error al tomar la foto', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleContactSelectionChange = (selected: boolean) => {
     setIsContactSelected(selected);
+  };
+
+  const handleAlertConfirm = () => {
+    setShowAlert(false);
+  };
+
+  const handleAlert = () => {
+    const getCurrentLocation = async () => {
+      try {
+        const position = await Geolocation.getCurrentPosition();
+        const { latitude, longitude } = position.coords;
+        setCurrentLocation({ latitude, longitude });
+      } catch (error) {
+        console.error('Error al obtener la ubicación', error);
+      }
+    };
+
+    getCurrentLocation();
+    console.log(currentLocation);
   };
 
   return (
@@ -128,6 +167,11 @@ const ShowNewTravel: React.FC = () => {
                 <IonIcon icon={camera} color="light" />
               </IonFabButton>
             </IonFab>
+            <IonFab vertical="top" horizontal="end" slot="fixed">
+              <IonFabButton size="small" color="danger" onClick={handleAlert}>
+                <IonIcon icon={alertCircle} color="light" />
+              </IonFabButton>
+            </IonFab>
             <IonLabel>
               <h3 style={{textAlign: "center", marginTop: "10%", marginBottom: "5%"}}>Viajando...</h3>
             </IonLabel>
@@ -142,8 +186,12 @@ const ShowNewTravel: React.FC = () => {
               onClick={handleGoBackLocation}
               loading={loading}
             />
+            {capturedImage && (
+              <img src={capturedImage} alt="Imagen capturada" style={{ maxWidth: '100%', height: 'auto' }} />
+            )}
           </> 
         )}
+        <IonAlert isOpen={showAlert} onDidDismiss={() => setShowAlert(false)} message={alertMessage} buttons={['Cancelar', { text: 'Aceptar', handler: handleAlertConfirm }]} />
       </IonContent>
     </IonPage>
   );
