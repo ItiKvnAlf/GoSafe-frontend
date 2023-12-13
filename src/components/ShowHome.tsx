@@ -10,12 +10,40 @@ import Emergency from '../pages/Emergency';
 import ResetPassword from '../pages/ResetPassword';
 import Settings from '../pages/Settings';
 import { useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
+import { UpdateUser } from '../redux/userSlice';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../redux/hooks';
 
 function ShowHome() {
+  
+  const user = useAppSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const token = localStorage.getItem('token');
+  const userID = jwtDecode(token!).own;
+  const header_config = {
+    headers: { Authorization: `Bearer ${token}` }
+  };
+  
   useEffect(() => {
     document.title = 'Inicio';
     const token = localStorage.getItem('token');
     const token_expires = localStorage.getItem('token_expires');
+    
+    const ProfileFetch = async () => {
+      const response = await axios.get("/users/" + userID, header_config);
+      const data = response.data.data;
+      dispatch(UpdateUser({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        rut: data.rut,
+        address: data.address,
+        contacts: data.Contacts
+      }));
+    }
+    ProfileFetch();
 
     if (token === null || token_expires === null) {
       (window as any).location = '/login';
@@ -88,3 +116,7 @@ function ShowHome() {
   );
 }
 export default ShowHome;
+
+function dispatch(arg0: any) {
+  throw new Error('Function not implemented.');
+}

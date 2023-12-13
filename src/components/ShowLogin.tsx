@@ -17,8 +17,8 @@ const ShowLogin: React.FC = () => {
     const dispatch = useAppDispatch();
 
     const history = useHistory();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('kevinalfarost@gmail.com');
+    const [password, setPassword] = useState('1234');
     const [showAlert, setShowAlert] = useState(false);
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
@@ -85,10 +85,9 @@ const ShowLogin: React.FC = () => {
                 rut: payload.data.rut,
                 name: payload.data.name,
                 phone: payload.data.phone,
+                contacts: payload.data.contacts,
+                address: payload.data.address
             }))
-
-
-
 
         } catch (error: any) {
             setAlertMessage('El correo electrónico o la contraseña son incorrectos');

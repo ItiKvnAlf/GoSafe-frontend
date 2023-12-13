@@ -1,4 +1,4 @@
-import { IonContent, IonItem, IonPage, IonInput, IonIcon, IonLabel, IonList, IonTextarea, IonFab, IonFabButton } from '@ionic/react';
+import { IonContent, IonItem, IonPage, IonInput, IonIcon, IonLabel, IonList, IonTextarea, IonFab, IonFabButton, IonCheckbox } from '@ionic/react';
 import MyMap from './Map';
 import MyMapRoute from './MapRoute';
 import React, { useEffect, useState } from 'react';
@@ -7,6 +7,7 @@ import ButtonFilled from './common/ButtonFilled';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { setEndPoint, setStartPoint } from '../redux/travelSlice';
 import L from 'leaflet';
+import ContactsList from './common/ContactsList';
 
 function newLatLgn (lat: string, lng: string) {
   return new L.LatLng(parseFloat(lat), parseFloat(lng));
@@ -15,16 +16,13 @@ function newLatLgn (lat: string, lng: string) {
 const ShowNewTravel: React.FC = () => {
   const [origin, setOrigin] = useState<L.LatLng | null>(null);
   const [destination, setDestination] = useState<L.LatLng | null>(null);
-  const [originName, setOriginName] = useState('');
-  const [destinationName, setDestinationName] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
+  const [isContactSelected, setIsContactSelected] = useState(false);
   const [verificationStep, setVerificationStep] = useState('location');
   const [emergencyMessage, setEmergencyMessage] = useState('Este es un mensaje de alerta desde GoSafe. Se adjuntan en este mensaje las coordenadas de ubicación desde donde se envía esta alerta, además de información adicional como el origen/destino o imágenes.');
 
   const travel = useAppSelector((state) => state.travel);
-  const user = useAppSelector((state) => state.user);
+  const userSelected = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -49,7 +47,6 @@ const ShowNewTravel: React.FC = () => {
 
   const handleLocationSelected = () => {
     setLoading(true);
-    console.log('Location selected | Origin: ', originName, ' Destination: ', destinationName); //enviar datos al backend
     setVerificationStep('emergencyInfo');
     setLoading(false);
   };
@@ -77,6 +74,10 @@ const ShowNewTravel: React.FC = () => {
     setLoading(false);
   }
 
+  const handleContactSelectionChange = (selected: boolean) => {
+    setIsContactSelected(selected);
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen color="light">
@@ -95,31 +96,23 @@ const ShowNewTravel: React.FC = () => {
         {verificationStep === 'emergencyInfo' && (
           <>
             <IonLabel>
-              <h3 style={{textAlign: "center", marginTop: "10%", marginBottom: "5%"}}>Seleccionar contactos:</h3>
+              <h3 style={{textAlign: "center", marginTop: "5%", marginBottom: "5%"}}>Seleccionar contactos:</h3>
             </IonLabel>
-            <>
-              {user.contacts.length === 0 ? (
-                <p style={{textAlign: "center", marginLeft: "5%", marginRight: "5%"}}>'No hay contactos'</p>
-              ) : (
-                <IonList style={{textAlign: "center", marginLeft: "5%", marginRight: "5%"}}>
-                  {user.contacts.map((contact, index) => (
-                    <IonItem key={index}>
-                      <IonLabel>{contact.name}</IonLabel>
-                    </IonItem>
-                  ))}
-                </IonList>
-              )}
-            </>
+            <ContactsList
+              user={userSelected}
+              maxHeightValue='150px'
+              onContactSelectionChange={handleContactSelectionChange}
+            ></ContactsList>
             <IonLabel>
-              <h3 style={{textAlign: "center", marginTop: "10%", marginBottom: "5%"}}>Mensaje de emergencia:</h3>
+              <h3 style={{textAlign: "center", marginTop: "5%", marginBottom: "5%"}}>Mensaje de emergencia:</h3>
             </IonLabel>
             <IonItem style={{ marginTop: "5%", marginLeft: "10%", marginRight: "10%", justifyContents: "center", alignItems: "center", borderRadius: "20px" }}>
-              <IonTextarea rows={5} value={emergencyMessage} style={{ margin: '10px' }} placeholder="Introduce tu mensaje de emergencia"></IonTextarea>
+              <IonTextarea rows={8} value={emergencyMessage} style={{ margin: '10px' }} placeholder="Introduce tu mensaje de emergencia"></IonTextarea>
             </IonItem>
             <ButtonFilled
               text="Comenzar viaje"
               onClick={handleStartTravel}
-              loading={loading}
+              loading={!isContactSelected}
             />
             <ButtonFilled
               text="Cancelar"
