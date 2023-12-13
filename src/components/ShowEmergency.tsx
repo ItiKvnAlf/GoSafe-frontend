@@ -1,7 +1,13 @@
-import { IonContent, IonPage, IonButton, IonImg, IonLabel } from '@ionic/react';
+import { IonContent, IonPage, IonButton, IonImg, IonLabel, IonAlert } from '@ionic/react';
 import { useEffect } from 'react';
+import { Geolocation } from '@capacitor/geolocation';
+import { useState } from 'react';
 
 const ShowEmergency: React.FC = () => {
+  const [currentLocation, setCurrentLocation] = useState<{ latitude: number, longitude: number } | null>(null);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
   useEffect(() => {
     document.title = 'Emergencia';
     const token = localStorage.getItem('token');
@@ -15,8 +21,24 @@ const ShowEmergency: React.FC = () => {
   }, []);
 
   const handleEmergency = () => {
-    console.log("Emergency button logic here...");
+    const getCurrentLocation = async () => {
+      try {
+        const position = await Geolocation.getCurrentPosition();
+        const { latitude, longitude } = position.coords;
+        setCurrentLocation({ latitude, longitude });
+      } catch (error) {
+        console.error('Error al obtener la ubicación', error);
+      }
+    };
+    getCurrentLocation();
+  
+    setAlertMessage(currentLocation?.latitude + ', ' + currentLocation?.longitude);
+    setShowAlert(true);
   };
+
+  const handleAlertConfirm = () => {
+    setShowAlert(false);
+  }; 
 
   return (
     <IonPage>
@@ -31,6 +53,7 @@ const ShowEmergency: React.FC = () => {
           style={{ width: "80%", justifySelf: "center", alignSelf: "center", display: "block", marginLeft: "auto", marginRight: "auto"}}
         ></IonImg>
         </IonButton>
+        <IonAlert isOpen={showAlert} onDidDismiss={() => setShowAlert(false)} message={alertMessage} buttons={['Cancelar', { text: 'Aceptar', handler: handleAlertConfirm }]} />
       </IonContent>
     </IonPage>
   );

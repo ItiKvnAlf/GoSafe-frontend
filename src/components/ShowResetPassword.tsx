@@ -43,7 +43,7 @@ const ShowResetPassword: React.FC = () => {
     }
 
     try {
-      const response = await axios.get(import.meta.env.VITE_API_URL + `/users/${email}`);
+      const response = await axios.get(import.meta.env.VITE_API_URL + `/users/email/${email}`);
       if (response.data !== undefined) {
         const sendEmail = await axios.post(import.meta.env.VITE_API_URL + `/users/resetPassword/${email}`);
         if (sendEmail.data !== undefined) {

@@ -1,4 +1,4 @@
-import { IonContent, IonItem, IonPage, IonInput, IonIcon, IonLabel, IonList, IonTextarea, IonFab, IonFabButton, IonCheckbox } from '@ionic/react';
+import { IonContent, IonItem, IonPage, IonInput, IonIcon, IonLabel, IonList, IonTextarea, IonFab, IonFabButton, IonCheckbox, IonAlert } from '@ionic/react';
 import MyMap from './Map';
 import MyMapRoute from './MapRoute';
 import React, { useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import { setEndPoint, setStartPoint } from '../redux/travelSlice';
 import L from 'leaflet';
 import ContactsList from './common/ContactsList';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Capacitor } from '@capacitor/core';
 
 function newLatLgn (lat: string, lng: string) {
   return new L.LatLng(parseFloat(lat), parseFloat(lng));
@@ -21,10 +22,12 @@ const ShowNewTravel: React.FC = () => {
   const [isContactSelected, setIsContactSelected] = useState(false);
   const [verificationStep, setVerificationStep] = useState('location');
   const [emergencyMessage, setEmergencyMessage] = useState('Este es un mensaje de alerta desde GoSafe. Se adjuntan en este mensaje las coordenadas de ubicación desde donde se envía esta alerta, además de información adicional como el origen/destino o imágenes.');
-
   const travel = useAppSelector((state) => state.travel);
   const userSelected = useAppSelector((state) => state.user);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   useEffect(() => {
     document.title = 'Nueva ruta';
@@ -79,6 +82,10 @@ const ShowNewTravel: React.FC = () => {
         resultType: CameraResultType.Base64,
       });
 
+      setCapturedImage(image.base64String!);
+      
+      setAlertMessage(capturedImage!);
+      setShowAlert(true);
       // Aquí puedes utilizar la imagen (image.base64String) como desees
 
     } catch (error) {
@@ -91,6 +98,11 @@ const ShowNewTravel: React.FC = () => {
   const handleContactSelectionChange = (selected: boolean) => {
     setIsContactSelected(selected);
   };
+
+  const handleAlertConfirm = () => {
+    setShowAlert(false);
+  };
+
 
   return (
     <IonPage>
@@ -158,6 +170,7 @@ const ShowNewTravel: React.FC = () => {
             />
           </> 
         )}
+        <IonAlert isOpen={showAlert} onDidDismiss={() => setShowAlert(false)} message={alertMessage} buttons={['Cancelar', { text: 'Aceptar', handler: handleAlertConfirm }]} />
       </IonContent>
     </IonPage>
   );
