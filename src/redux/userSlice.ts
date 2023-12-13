@@ -3,6 +3,7 @@ import { RootState } from './store';
 
 
 interface Contacts {
+    user_id: string;
     name: string;
     email: string;
     phone: string;
@@ -68,8 +69,8 @@ export const userSlice = createSlice({
             state.contacts = contacts;
         },
         createContact: (state, action) => {
-            const { name, email, phone } = action.payload;
-            state.contacts = [...state.contacts, { name, email, phone }];
+            const { name, email, phone, user_id } = action.payload;
+            state.contacts = [...state.contacts, { user_id, name, email, phone }];
         }
     }
 });

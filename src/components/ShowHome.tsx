@@ -1,36 +1,35 @@
-import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet, IonImg, IonContent, IonItem } from '@ionic/react';
+import { IonLabel, IonImg, IonContent, IonItem, IonIcon, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { location, personCircle, alertCircle, settings, home } from 'ionicons/icons';
-
-import { Route } from 'react-router';
-
-import Profile from '../pages/Profile';
-import NewTravel from '../pages/NewTravel';
-import Emergency from '../pages/Emergency';
-import ResetPassword from '../pages/ResetPassword';
-import Settings from '../pages/Settings';
 import { useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { UpdateUser } from '../redux/userSlice';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../redux/hooks';
+import { location, personCircle, home, alertCircle, settings } from 'ionicons/icons';
+import { Route } from 'react-router';
+import Emergency from '../pages/Emergency';
+import NewTravel from '../pages/NewTravel';
+import Profile from '../pages/Profile';
+import ResetPassword from '../pages/ResetPassword';
+import Settings from '../pages/Settings';
 
 function ShowHome() {
-  
+
   const user = useAppSelector((state) => state.user);
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
   const userID = jwtDecode(token!).own;
+
   const header_config = {
     headers: { Authorization: `Bearer ${token}` }
   };
-  
+
   useEffect(() => {
     document.title = 'Inicio';
     const token = localStorage.getItem('token');
     const token_expires = localStorage.getItem('token_expires');
-    
+
     const ProfileFetch = async () => {
       const response = await axios.get("/users/" + userID, header_config);
       const data = response.data.data;
@@ -78,40 +77,42 @@ function ShowHome() {
         <IonItem>
           <IonLabel><h1>Emergencia</h1><h4>Envía tu ubicación.</h4></IonLabel>
         </IonItem>
-      </IonContent>
-      <IonTabs>
-        <IonRouterOutlet>
-          { }
-          <Route path="/profile" render={() => <Profile />} exact={true} />
-          <Route path="/newTravel" render={() => <NewTravel />} exact={true} />
-          <Route path="/emergency" render={() => <Emergency />} exact={true} />
-          <Route path="/resetPassword" render={() => <ResetPassword />} exact={true} />
-          <Route path="/settings" render={() => <Settings />} exact={true} />
-        </IonRouterOutlet>
+        <IonReactRouter>
+          <IonTabs>
+            <IonRouterOutlet>
+              { }
+              <Route path="/profile" render={() => <Profile />} exact={true} />
+              <Route path="/newTravel" render={() => <NewTravel />} exact={true} />
+              <Route path="/emergency" render={() => <Emergency />} exact={true} />
+              <Route path="/resetPassword" render={() => <ResetPassword />} exact={true} />
+              <Route path="/settings" render={() => <Settings />} exact={true} />
+            </IonRouterOutlet>
 
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="profile" href="/profile">
-            <IonIcon icon={personCircle}></IonIcon>
-            <IonLabel style={{ fontSize: '80%' }}>Perfil</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="newTravel" href="/newTravel" >
-            <IonIcon icon={location}></IonIcon>
-            <IonLabel style={{ fontSize: '80%' }}>Nuevo Viaje</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="home" href="/home">
-            <IonIcon icon={home}></IonIcon>
-            <IonLabel style={{ fontSize: '80%' }}>Inicio</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="emergency" href="/emergency">
-            <IonIcon icon={alertCircle}></IonIcon>
-            <IonLabel style={{ fontSize: '80%' }}>Emergencia</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="settings" href="/settings">
-            <IonIcon icon={settings}></IonIcon>
-            <IonLabel style={{ fontSize: '80%' }}>Ajustes</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="profile" href="/profile">
+                <IonIcon icon={personCircle}></IonIcon>
+                <IonLabel style={{ fontSize: '80%' }}>Perfil</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="newTravel" href="/newTravel" >
+                <IonIcon icon={location}></IonIcon>
+                <IonLabel style={{ fontSize: '80%' }}>Nuevo Viaje</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="home" href="/home">
+                <IonIcon icon={home}></IonIcon>
+                <IonLabel style={{ fontSize: '80%' }}>Inicio</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="emergency" href="/emergency">
+                <IonIcon icon={alertCircle}></IonIcon>
+                <IonLabel style={{ fontSize: '80%' }}>Emergencia</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="settings" href="/settings">
+                <IonIcon icon={settings}></IonIcon>
+                <IonLabel style={{ fontSize: '80%' }}>Ajustes</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </IonReactRouter>
+      </IonContent>
     </IonReactRouter>
   );
 }

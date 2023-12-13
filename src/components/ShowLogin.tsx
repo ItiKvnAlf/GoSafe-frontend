@@ -27,13 +27,7 @@ const ShowLogin: React.FC = () => {
 
     useEffect(() => {
         document.title = 'Inicio de sesión';
-        if (!showSuccessAlert && redirectToHome) {
-            (history as any).push('/home');
-            setEmail('');
-            setPassword('');
-            setLoading(false);
-        }
-    }, [showSuccessAlert, redirectToHome]);
+    }, []);
 
     const handleAlertConfirm = () => {
         setShowAlert(false);
@@ -68,6 +62,15 @@ const ShowLogin: React.FC = () => {
                 setAlertMessage('Inicio de sesión exitoso');
                 setShowSuccessAlert(true);
                 setLoading(true);
+                (history as any).push('/home');
+                dispatch(UpdateUser({
+                    email: payload.data.email,
+                    rut: payload.data.rut,
+                    name: payload.data.name,
+                    phone: payload.data.phone,
+                    contacts: payload.data.contacts,
+                    address: payload.data.address
+                }))
 
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('token_expires', response.data.token_expires);
@@ -80,14 +83,7 @@ const ShowLogin: React.FC = () => {
                 setShowAlert(true);
                 setLoading(false);
             }
-            dispatch(UpdateUser({
-                email: payload.data.email,
-                rut: payload.data.rut,
-                name: payload.data.name,
-                phone: payload.data.phone,
-                contacts: payload.data.contacts,
-                address: payload.data.address
-            }))
+
 
         } catch (error: any) {
             setAlertMessage('El correo electrónico o la contraseña son incorrectos');
@@ -135,8 +131,12 @@ const ShowLogin: React.FC = () => {
                     text="Registrarse"
                     path="/register"
                 />
-                <IonAlert isOpen={showAlert} onDidDismiss={() => setShowAlert(false)} message={alertMessage} buttons={['Cancelar', { text: 'Aceptar', handler: handleAlertConfirm }]} />
-                <IonAlert isOpen={showSuccessAlert} onDidDismiss={() => setShowSuccessAlert(false)} message={alertMessage} buttons={[{ text: 'Aceptar', handler: handleAlertConfirm }]} />
+                <IonAlert
+                    isOpen={showAlert}
+                    onDidDismiss={() => setShowAlert(false)}
+                    message={alertMessage}
+                    buttons={['Cancelar', { text: 'Aceptar', handler: handleAlertConfirm }]}
+                />
             </IonContent>
         </IonPage>
     );

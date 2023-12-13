@@ -1,4 +1,5 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const api_url = import.meta.env.VITE_API_URL
 axios.defaults.baseURL = api_url;
@@ -17,6 +18,11 @@ axios.defaults.baseURL = api_url;
 // `withCredentials` indicates whether or not cross-site Access-Control requests
 // should be made using credentials
 
+const token = localStorage.getItem('token');
+if (token) {
+    console.log("token:", token);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
 
 export const LoginFecth = () => axios.create({
     method: 'post',
@@ -39,13 +45,8 @@ export const RegisterFetch = axios.create({
 
 });
 
-export const ProfileFetch = axios.create({
-    baseURL: api_url,
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-    },
-    timeout: 1000,
-
+export const ContactCreate = () => axios.create({
+    method: 'post',
+    url: '/contacts',
 });
 

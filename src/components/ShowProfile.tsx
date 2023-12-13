@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonPage, IonAvatar, IonButton, IonInput, IonItem, IonCol, IonGrid, IonRow, IonIcon, IonFab, IonFabButton, IonAlert } from '@ionic/react';
-import { call, home, idCard, logOut, mail, pencil, people, person } from 'ionicons/icons';
+import { IonContent, IonPage, IonAvatar, IonButton, IonInput, IonItem, IonCol, IonGrid, IonRow, IonIcon, IonFab, IonFabButton, IonAlert, IonNavLink, useIonRouter } from '@ionic/react';
+import { call, home, idCard, logOut, mail, pencil, person } from 'ionicons/icons';
 import { useDispatch } from 'react-redux';
 import { UpdateUser, updateAddress, updateName, updatePhone } from '../redux/userSlice';
 import '../pages/Profile.css';
@@ -9,11 +9,20 @@ import { useAppSelector } from '../redux/hooks';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
+import HorizontalListButton from './HorizontalListButton';
+import { useContacts } from '../hooks/useContacts';
+
 const ShowProfile: React.FC = () => {
   const user = useAppSelector((state) => state.user);
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  const {
+    success,
+    setSuccess
+  } = useContacts();
+
+
   const token = localStorage.getItem('token');
   const userID = jwtDecode(token!).own;
   const header_config = {
@@ -25,7 +34,6 @@ const ShowProfile: React.FC = () => {
     address: user.address
 
   };
-
 
   useEffect(() => {
     document.title = 'Perfil';
@@ -120,12 +128,6 @@ const ShowProfile: React.FC = () => {
     }
   }
 
-  const handleContacts = () => {
-    setLoading(true);
-    console.log('Contacts logic here');
-    setLoading(false);
-  }
-
   return (
     <IonPage>
       <IonContent fullscreen color="light">
@@ -143,15 +145,15 @@ const ShowProfile: React.FC = () => {
           </IonRow>
         </IonGrid>
         <IonFab vertical="top" horizontal="start" slot="fixed">
-          <IonFabButton size="small" color="danger" onClick={handleLogout}>
+          <IonFabButton
+            size="small"
+            color="danger"
+            onClick={handleLogout}
+          >
             <IonIcon icon={logOut} color="light" />
           </IonFabButton>
         </IonFab>
-        <IonFab vertical="top" horizontal="end" slot="fixed">
-          <IonFabButton size="small" color="tertiary" onClick={handleContacts}>
-            <IonIcon icon={people} color="light" />
-          </IonFabButton>
-        </IonFab>
+        <HorizontalListButton />
         <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px' }}>
           <IonIcon size='small' icon={person} color='tertiary'></IonIcon>
           <IonInput
@@ -212,12 +214,6 @@ const ShowProfile: React.FC = () => {
         <ButtonFilled
           text="Actualizar datos"
           onClick={handleUpdateUser}
-          loading={loading}
-          color='warning'
-        />
-        <ButtonFilled
-          text="Modificar contraseña"
-          onClick={handleResetPassword}
           loading={loading}
           color='warning'
         />

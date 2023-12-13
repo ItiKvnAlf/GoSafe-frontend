@@ -45,3 +45,8 @@ export interface User {
     TravelRoutes: TravelRoutes[];
 }
 
+interface token {
+    own: string;
+    exp: number;
+}
+
