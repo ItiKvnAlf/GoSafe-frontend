@@ -35,6 +35,7 @@ const ShowContacts: React.FC = () => {
         setSuccess
     } = useContacts();
 
+
     const handleCreateContact = async () => {
 
         const userID = jwtDecode(localStorage.getItem("token")!).own!;
@@ -50,13 +51,8 @@ const ShowContacts: React.FC = () => {
             }
         );
         if (response.status === 201) {
-            console.log("Contacto creado");
+            setSuccess(true)
         }
-    }
-
-    const handleInputs = (e: any) => {
-        setPhone(e.detail.value!)
-        setSuccess(true)
     }
 
     return (
@@ -75,8 +71,7 @@ const ShowContacts: React.FC = () => {
                         value={name}
                         labelPlacement="stacked"
                         placeholder="Nombre de usuario"
-                        maxlength={15}
-                        required
+                        maxlength={30}
                         onIonInput={(e) =>
                             setName(e.detail.value!)
                         }
@@ -90,12 +85,12 @@ const ShowContacts: React.FC = () => {
                         value={email}
                         labelPlacement="stacked"
                         type="email"
-                        required
-                        maxlength={15}
+                        maxlength={30}
                         placeholder="correo@gmail.com"
                         onIonInput={(e) =>
                             setEmail(e.detail.value!)
                         }
+
 
                     />
                 </IonItem>
@@ -107,9 +102,8 @@ const ShowContacts: React.FC = () => {
                         labelPlacement="stacked"
                         placeholder="9xxxxxxxx"
                         maxlength={9}
-                        required
                         onIonInput={(e) =>
-                            handleInputs(e)
+                            setPhone(e.detail.value!)
                         }
 
                     />
@@ -117,12 +111,11 @@ const ShowContacts: React.FC = () => {
                 <ButtonFilled
                     text="Añadir Contacto"
                     onClick={handleCreateContact}
-                    loading={success} />
+                    loading={false} />
                 <IonAlert
                     isOpen={success}
-                    header="Datos actualizados"
-                    subHeader=":D"
-                    message="Los datos han sido actualizados correctamente."
+                    header="Contacto añadido :D"
+                    message="El contacto se ha creado."
                     buttons={['OK']}
                     onDidDismiss={() => setSuccess(false)}
                 ></IonAlert>

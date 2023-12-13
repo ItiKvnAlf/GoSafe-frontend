@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { UpdateUser } from '../redux/userSlice';
-import { IonBackButton, IonButtons, IonCheckbox, IonContent, IonItem, IonList, IonTitle } from '@ionic/react';
+import { IonBackButton, IonButtons, IonCheckbox, IonContent, IonItem, IonList, IonPage, IonTitle } from '@ionic/react';
 
 const Contacts: React.FC = () => {
 
@@ -50,45 +50,42 @@ const Contacts: React.FC = () => {
     return (
 
         <>
-            <IonContent fullscreen color="light">
-
-                <IonButtons
-                    slot="start"
-
-                >
+            <IonPage>
+                <IonButtons slot="start">
                     <IonBackButton
                         defaultHref="/profile"
                     ></IonBackButton>
                 </IonButtons>
-                <IonTitle style={{ marginTop: '5%', textAlign: 'center' }}>Lista de contactos</IonTitle>
-                {user.contacts.length === 0 ? (
-                    <p style={{ textAlign: "center", marginLeft: "10%", marginRight: "10%" }}>
-                        'No hay contactos'
-                    </p>
-                ) : (
-                    <div
-                        style={{
-                            maxHeight: "1000px",
-                            overflowY: "auto",
-                            textAlign: "center",
-                            marginTop: "10%",
-                            marginLeft: "10%",
-                            marginRight: "10%",
-                            borderRadius: "20px",
-                        }}
-                    >
-                        <IonList>
-                            {user.contacts.map((contact, index) => (
-                                <IonItem key={index}>
-                                    {contact.name}
-                                </IonItem>
-                            ))}
-                        </IonList>
-                    </div>
-                )}
+                <IonContent fullscreen color="light">
+                    <IonTitle style={{ marginTop: '5%', textAlign: 'center' }}>Lista de contactos</IonTitle>
 
-
-            </IonContent>
+                    {user.contacts.length === 0 ? (
+                        <p style={{ textAlign: "center", marginLeft: "10%", marginRight: "10%" }}>
+                            'No hay contactos'
+                        </p>
+                    ) : (
+                        <div
+                            style={{
+                                maxHeight: "1000px",
+                                overflowY: "auto",
+                                textAlign: "center",
+                                marginTop: "10%",
+                                marginLeft: "10%",
+                                marginRight: "10%",
+                                borderRadius: "20px",
+                            }}
+                        >
+                            <IonList>
+                                {user.contacts.map((contact, index) => (
+                                    <IonItem key={index}>
+                                        {contact.name}
+                                    </IonItem>
+                                ))}
+                            </IonList>
+                        </div>
+                    )}
+                </IonContent>
+            </IonPage>
         </>
     );
 };
