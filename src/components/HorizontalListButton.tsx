@@ -6,6 +6,10 @@ import PopOutContact from "./PopOutContact";
 const handleRedirectContacts = () => {
     (window as any).location = '/contacts';
 }
+const handleRedirectAddContacts = () => {
+    (window as any).location = '/addContacts';
+}
+
 
 const HorizontalListButton: React.FC = () => {
     return (
@@ -31,10 +35,10 @@ const HorizontalListButton: React.FC = () => {
             </IonFabList>
             <IonFabList side="start">
                 <IonFabButton id="present-alert">
-                    <PopOutContact />
                     <IonIcon
                         icon={add}
                         color="tertiary"
+                        onClick={handleRedirectAddContacts}
                     ></IonIcon>
                 </IonFabButton>
             </IonFabList>

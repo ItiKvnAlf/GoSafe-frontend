@@ -4,7 +4,10 @@ import {
     IonIcon,
     IonItem,
     IonInput,
-    IonAlert
+    IonAlert,
+    IonTitle,
+    IonBackButton,
+    IonButtons
 } from "@ionic/react";
 
 import {
@@ -14,8 +17,12 @@ import {
 } from "ionicons/icons";
 
 import { useContacts } from "../hooks/useContacts";
+import { jwtDecode } from "jwt-decode";
+import { ButtonFilled } from "./common";
+import axios from "axios";
 
 const ShowContacts: React.FC = () => {
+
 
     const {
         email,
@@ -28,19 +35,52 @@ const ShowContacts: React.FC = () => {
         setSuccess
     } = useContacts();
 
+    const handleCreateContact = async () => {
+
+        const userID = jwtDecode(localStorage.getItem("token")!).own!;
+        const response = await axios.post("/contacts",
+            {
+                user_id: userID,
+                name: name,
+                email: email,
+                phone: phone,
+            },
+            {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+            }
+        );
+        if (response.status === 201) {
+            console.log("Contacto creado");
+        }
+    }
+
+    const handleInputs = (e: any) => {
+        setPhone(e.detail.value!)
+        setSuccess(true)
+    }
+
     return (
         <IonPage>
+            <IonButtons slot="start">
+                <IonBackButton
+                    defaultHref="/profile"
+                ></IonBackButton>
+            </IonButtons>
             <IonContent fullscreen color="light">
-                <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px' }}>
+                <IonTitle style={{ marginTop: '5%', textAlign: 'center' }}>Datos del nuevo contacto :D</IonTitle>
+                <IonItem style={{ marginTop: '5%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px' }}>
                     <IonIcon size='small' icon={person} color='tertiary'></IonIcon>
                     <IonInput
                         style={{ textAlign: 'center', fontSize: '12px' }}
                         value={name}
                         labelPlacement="stacked"
                         placeholder="Nombre de usuario"
+                        maxlength={15}
+                        required
                         onIonInput={(e) =>
                             setName(e.detail.value!)
                         }
+
                     />
                 </IonItem>
                 <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px' }}>
@@ -50,10 +90,13 @@ const ShowContacts: React.FC = () => {
                         value={email}
                         labelPlacement="stacked"
                         type="email"
-                        placeholder="Correo electrónico"
+                        required
+                        maxlength={15}
+                        placeholder="correo@gmail.com"
                         onIonInput={(e) =>
                             setEmail(e.detail.value!)
                         }
+
                     />
                 </IonItem>
                 <IonItem style={{ marginTop: '1%', marginLeft: '10%', marginRight: '10%', borderRadius: '50px' }}>
@@ -62,12 +105,19 @@ const ShowContacts: React.FC = () => {
                         style={{ textAlign: 'center', fontSize: '12px' }}
                         value={phone}
                         labelPlacement="stacked"
-                        placeholder="Celular"
+                        placeholder="9xxxxxxxx"
+                        maxlength={9}
+                        required
                         onIonInput={(e) =>
-                            setPhone(e.detail.value!)
+                            handleInputs(e)
                         }
+
                     />
                 </IonItem>
+                <ButtonFilled
+                    text="Añadir Contacto"
+                    onClick={handleCreateContact}
+                    loading={success} />
                 <IonAlert
                     isOpen={success}
                     header="Datos actualizados"
